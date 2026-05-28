@@ -1,0 +1,63 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: skillbridge_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: skillbridge
+      MYSQL_USER: skillbridge_user
+      MYSQL_PASSWORD: skillbridge_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - skillbridge_network
+
+  mongodb:
+    image: mongo:7
+    container_name: skillbridge_mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - skillbridge_network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: skillbridge_phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: skillbridge_user
+      PMA_PASSWORD: skillbridge_password
+    depends_on:
+      - mysql
+    networks:
+      - skillbridge_network
+
+  mongo-express:
+    image: mongo-express
+    container_name: skillbridge_mongo_express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_BASICAUTH: false
+    depends_on:
+      - mongodb
+    networks:
+      - skillbridge_network
+
+volumes:
+  mysql_data:
+  mongodb_data:
+
+networks:
+  skillbridge_network:
