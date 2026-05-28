@@ -5,3 +5,40 @@ generator client {
 datasource db {
   provider = "mysql"
 }
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  DISABLED
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  firstname String     @db.VarChar(100)
+  lastname  String     @db.VarChar(100)
+  email     String     @unique @db.VarChar(255)
+  password  String     @db.VarChar(255)
+  role      UserRole   @default(USER)
+  status    UserStatus @default(ACTIVE)
+  profile   Profile?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@map("users")
+}
+
+model Profile {
+  id        Int      @id @default(autoincrement())
+  bio       String?  @db.Text
+  avatarUrl String?  @db.VarChar(500)
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("profiles")
+}
