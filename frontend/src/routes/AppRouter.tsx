@@ -15,6 +15,8 @@ import ProfilePage from "../pages/app/ProfilePage";
 import SearchPage from "../pages/app/SearchPage";
 import GroupsPage from "../pages/app/GroupsPage";
 import GroupDetailPage from "../pages/app/GroupDetailPage";
+import GroupSessionsPage from "../pages/app/GroupSessionsPage";
+import GroupMessagesPage from "../pages/app/GroupMessagesPage";
 import SessionsPage from "../pages/app/SessionsPage";
 import NotificationsPage from "../pages/app/NotificationsPage";
 
@@ -64,6 +66,14 @@ export const router = createBrowserRouter([
           {
             path: "/groups/:id",
             element: <GroupDetailPage />,
+          },
+          {
+            path: "/groups/:id/sessions",
+            element: <GroupSessionsPage />,
+          },
+          {
+            path: "/groups/:id/messages",
+            element: <GroupMessagesPage />,
           },
           {
             path: "/sessions",
