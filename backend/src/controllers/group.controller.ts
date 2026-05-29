@@ -20,6 +20,15 @@ export const groupController = {
     }
   },
 
+  async getMyGroups(req: Request, res: Response, next: NextFunction) {
+    try {
+      const groups = await groupService.getMyGroups(req.user.id);
+      res.status(200).json(groups);
+    } catch (error) {
+      next(error);
+    }
+  },
+
   async createGroup(req: Request, res: Response, next: NextFunction) {
     try {
       const group = await groupService.createGroup(req.user.id, req.body);

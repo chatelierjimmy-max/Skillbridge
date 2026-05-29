@@ -8,16 +8,12 @@ import type { RegisterFormData } from "../../schemas/auth.schema";
 
 import { authService } from "../../services/auth.service";
 import { useAuth } from "../../hooks/useAuth";
+import { getApiErrorMessage } from "../../utils/apiError";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
 
   const { isAuthenticated } = useAuth();
-
-  if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
-  }
-
   const [serverError, setServerError] = useState("");
 
   const {
@@ -35,12 +31,16 @@ export default function RegisterPage() {
       await authService.register(data);
 
       navigate("/login");
-    } catch (error: any) {
+    } catch (error) {
       setServerError(
-        error.response?.data?.error || "Erreur lors de l'inscription",
+        getApiErrorMessage(error, "Erreur lors de l'inscription"),
       );
     }
   };
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   return (
     <div className="mx-auto max-w-md px-4 py-20">

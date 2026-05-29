@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { profileService } from "../../services/profile.service";
 import { skillService } from "../../services/skill.service";
 import type { Level, Profile } from "../../types/profile.type";
@@ -15,7 +15,7 @@ export default function ProfilePage() {
   const [error, setError] = useState("");
   const [isAddingSkill, setIsAddingSkill] = useState(false);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setError("");
 
@@ -31,11 +31,12 @@ export default function ProfilePage() {
     } catch {
       setError("Impossible de charger les données du profil.");
     }
-  };
+  }, []);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void fetchData();
+  }, [fetchData]);
 
   const handleProfileSubmit = async (event: React.FormEvent) => {
     event.preventDefault();

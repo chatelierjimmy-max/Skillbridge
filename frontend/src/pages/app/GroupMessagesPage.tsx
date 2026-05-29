@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Send, Trash2 } from "lucide-react";
 
@@ -8,6 +8,7 @@ import { groupService } from "../../services/group.service";
 import type { GroupMessage } from "../../types/message.type";
 import type { GroupDetail } from "../../types/group.type";
 import { useAuth } from "../../hooks/useAuth";
+import { getApiErrorMessage } from "../../utils/apiError";
 
 export default function GroupMessagesPage() {
   const { id } = useParams();
@@ -28,7 +29,7 @@ export default function GroupMessagesPage() {
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const [groupData, messagesData] = await Promise.all([
         groupService.getGroupById(groupId),
@@ -37,19 +38,19 @@ export default function GroupMessagesPage() {
 
       setGroup(groupData);
       setMessages(messagesData);
-    } catch (error: any) {
+    } catch (error) {
       setError(
-        error.response?.data?.error ||
-          "Erreur lors du chargement de la messagerie",
+        getApiErrorMessage(error, "Erreur lors du chargement de la messagerie"),
       );
     } finally {
       setLoading(false);
     }
-  };
+  }, [groupId]);
 
   useEffect(() => {
-    fetchData();
-  }, [groupId]);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void fetchData();
+  }, [fetchData]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({
@@ -79,9 +80,9 @@ export default function GroupMessagesPage() {
 
       setContent("");
       await fetchData();
-    } catch (error: any) {
+    } catch (error) {
       setError(
-        error.response?.data?.error || "Erreur lors de l’envoi du message",
+        getApiErrorMessage(error, "Erreur lors de l’envoi du message"),
       );
     } finally {
       setSending(false);
@@ -97,10 +98,9 @@ export default function GroupMessagesPage() {
 
       setSuccess("Message supprimé.");
       await fetchData();
-    } catch (error: any) {
+    } catch (error) {
       setError(
-        error.response?.data?.error ||
-          "Erreur lors de la suppression du message",
+        getApiErrorMessage(error, "Erreur lors de la suppression du message"),
       );
     }
   };

@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Calendar, Clock, Users } from "lucide-react";
 
 import { sessionService } from "../../services/session.service";
 import type { GroupSession } from "../../types/session.type";
+import { getApiErrorMessage } from "../../utils/apiError";
 
 export default function GroupSessionsPage() {
   const { id } = useParams();
@@ -22,18 +23,18 @@ export default function GroupSessionsPage() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  const fetchSessions = async () => {
+  const fetchSessions = useCallback(async () => {
     try {
       const data = await sessionService.getGroupSessions(groupId);
       setSessions(data);
     } finally {
       setLoading(false);
     }
-  };
+  }, [groupId]);
 
   useEffect(() => {
-    fetchSessions();
-  }, [groupId]);
+    void fetchSessions();
+  }, [fetchSessions]);
 
   const handleCreateSession = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -59,11 +60,8 @@ export default function GroupSessionsPage() {
       setMessage("Session créée avec succès.");
 
       await fetchSessions();
-    } catch (error: any) {
-      setError(
-        error.response?.data?.error ||
-          "Erreur lors de la création de la session",
-      );
+    } catch (error) {
+      setError(getApiErrorMessage(error, "Erreur lors de la création de la session"));
     }
   };
 
@@ -77,8 +75,8 @@ export default function GroupSessionsPage() {
       setMessage("Inscription confirmée.");
 
       await fetchSessions();
-    } catch (error: any) {
-      setError(error.response?.data?.error || "Erreur lors de l’inscription");
+    } catch (error) {
+      setError(getApiErrorMessage(error, "Erreur lors de l’inscription"));
     }
   };
 

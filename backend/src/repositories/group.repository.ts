@@ -95,6 +95,20 @@ export const groupRepository = {
     });
   },
 
+  findUserGroups(userId: number) {
+    return prisma.groupMember.findMany({
+      where: { userId },
+      include: {
+        group: {
+          include: {
+            skill: true,
+            members: true,
+          },
+        },
+      },
+    });
+  },
+
   join(userId: number, groupId: number) {
     return prisma.groupMember.create({
       data: {

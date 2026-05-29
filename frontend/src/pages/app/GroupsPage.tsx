@@ -9,6 +9,7 @@ import type { GroupListItem } from "../../types/group.type";
 import type { Skill } from "../../types/skill.type";
 import type { Level } from "../../types/profile.type";
 import { levelLabel } from "../../utils/levelLabel";
+import { getApiErrorMessage } from "../../utils/apiError";
 
 export default function GroupsPage() {
   const [groups, setGroups] = useState<GroupListItem[]>([]);
@@ -64,10 +65,8 @@ export default function GroupsPage() {
       setSkillId("");
 
       await fetchData();
-    } catch (error: any) {
-      setError(
-        error.response?.data?.error || "Erreur lors de la création du groupe",
-      );
+    } catch (error) {
+      setError(getApiErrorMessage(error, "Erreur lors de la création du groupe"));
     }
   };
 

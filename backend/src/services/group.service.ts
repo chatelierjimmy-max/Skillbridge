@@ -55,6 +55,20 @@ export const groupService = {
     };
   },
 
+  async getMyGroups(userId: number) {
+    const memberships = await groupRepository.findUserGroups(userId);
+
+    return memberships.map((membership) => ({
+      id: membership.group.id,
+      name: membership.group.name,
+      description: membership.group.description,
+      level: membership.group.level,
+      skill: membership.group.skill,
+      membersCount: membership.group.members.length,
+      role: membership.role,
+    }));
+  },
+
   async createGroup(userId: number, data: CreateGroupInput) {
     const skill = await skillRepository.findById(data.skillId);
 

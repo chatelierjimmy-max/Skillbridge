@@ -3,11 +3,17 @@ import type {
   CreateGroupData,
   GroupDetail,
   GroupListItem,
+  MyGroup,
 } from "../types/group.type";
 
 export const groupService = {
   async getGroups() {
     const response = await api.get<GroupListItem[]>("/groups");
+    return response.data;
+  },
+
+  async getMyGroups() {
+    const response = await api.get<MyGroup[]>("/groups/me");
     return response.data;
   },
 

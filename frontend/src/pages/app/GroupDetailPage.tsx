@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Calendar, MessageCircle, Users } from "lucide-react";
 
@@ -6,6 +6,7 @@ import { groupService } from "../../services/group.service";
 import type { GroupDetail } from "../../types/group.type";
 import { useAuth } from "../../hooks/useAuth";
 import { levelLabel } from "../../utils/levelLabel";
+import { getApiErrorMessage } from "../../utils/apiError";
 
 export default function GroupDetailPage() {
   const { id } = useParams();
@@ -18,18 +19,18 @@ export default function GroupDetailPage() {
 
   const groupId = Number(id);
 
-  const fetchGroup = async () => {
+  const fetchGroup = useCallback(async () => {
     try {
       const data = await groupService.getGroupById(groupId);
       setGroup(data);
     } finally {
       setLoading(false);
     }
-  };
+  }, [groupId]);
 
   useEffect(() => {
-    fetchGroup();
-  }, [groupId]);
+    void fetchGroup();
+  }, [fetchGroup]);
 
   const isMember = group?.members.some((member) => member.id === user?.id);
 
@@ -44,9 +45,9 @@ export default function GroupDetailPage() {
 
       setMessage("Vous avez rejoint le groupe.");
       await fetchGroup();
-    } catch (error: any) {
+    } catch (error) {
       setError(
-        error.response?.data?.error || "Erreur lors de l'inscription au groupe",
+        getApiErrorMessage(error, "Erreur lors de l'inscription au groupe"),
       );
     }
   };
@@ -60,9 +61,9 @@ export default function GroupDetailPage() {
 
       setMessage("Vous avez quitté le groupe.");
       await fetchGroup();
-    } catch (error: any) {
+    } catch (error) {
       setError(
-        error.response?.data?.error || "Erreur lors de la sortie du groupe",
+        getApiErrorMessage(error, "Erreur lors de la sortie du groupe"),
       );
     }
   };

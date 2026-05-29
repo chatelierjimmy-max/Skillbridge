@@ -16,6 +16,12 @@ router.post(
 );
 
 router.get(
+  "/me",
+  authMiddleware,
+  groupController.getMyGroups,
+);
+
+router.get(
   "/:id",
   authMiddleware,
   validate(groupIdParamSchema),

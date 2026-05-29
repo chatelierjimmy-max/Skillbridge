@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import { sessionService } from "../../services/session.service";
 import type { MySession } from "../../types/session.type";
+import { getApiErrorMessage } from "../../utils/apiError";
 
 export default function SessionsPage() {
   const [sessions, setSessions] = useState<MySession[]>([]);
@@ -34,8 +35,8 @@ export default function SessionsPage() {
       setMessage("Participation annulée.");
 
       await fetchSessions();
-    } catch (error: any) {
-      setError(error.response?.data?.error || "Erreur lors de l’annulation");
+    } catch (error) {
+      setError(getApiErrorMessage(error, "Erreur lors de l’annulation"));
     }
   };
 

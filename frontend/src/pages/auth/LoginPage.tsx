@@ -8,16 +8,12 @@ import type { LoginFormData } from "../../schemas/auth.schema";
 
 import { authService } from "../../services/auth.service";
 import { useAuth } from "../../hooks/useAuth";
+import { getApiErrorMessage } from "../../utils/apiError";
 
 export default function LoginPage() {
   const navigate = useNavigate();
 
   const { login, isAuthenticated } = useAuth();
-
-  if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
-  }
-
   const [serverError, setServerError] = useState("");
 
   const {
@@ -37,10 +33,14 @@ export default function LoginPage() {
       login(response.accessToken, response.user);
 
       navigate("/dashboard");
-    } catch (error: any) {
-      setServerError(error.response?.data?.error || "Erreur de connexion");
+    } catch (error) {
+      setServerError(getApiErrorMessage(error, "Erreur de connexion"));
     }
   };
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   return (
     <div className="mx-auto max-w-md px-4 py-20">

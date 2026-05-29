@@ -42,6 +42,16 @@ export interface GroupDetail {
   createdAt: string;
 }
 
+export interface MyGroup {
+  id: number;
+  name: string;
+  description?: string;
+  level?: Level;
+  skill: Skill;
+  membersCount: number;
+  role: GroupRole;
+}
+
 export interface CreateGroupData {
   name: string;
   description?: string;
