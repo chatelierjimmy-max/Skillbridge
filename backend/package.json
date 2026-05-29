@@ -48,5 +48,8 @@
   },
   "overrides": {
     "@hono/node-server": "^1.19.13"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }

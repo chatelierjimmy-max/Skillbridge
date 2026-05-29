@@ -16,6 +16,12 @@ enum UserStatus {
   DISABLED
 }
 
+enum Level {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
 model User {
   id        Int        @id @default(autoincrement())
   firstname String     @db.VarChar(100)
@@ -25,6 +31,7 @@ model User {
   role      UserRole   @default(USER)
   status    UserStatus @default(ACTIVE)
   profile   Profile?
+  skills    UserSkill[]
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 
@@ -32,13 +39,41 @@ model User {
 }
 
 model Profile {
+  id           Int      @id @default(autoincrement())
+  bio          String?  @db.Text
+  avatarUrl    String?  @db.VarChar(500)
+  level        Level?
+  availability String?  @db.VarChar(255)
+  location     String?  @db.VarChar(255)
+  userId       Int      @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("profiles")
+}
+
+model Skill {
+  id        Int         @id @default(autoincrement())
+  name      String      @unique @db.VarChar(100)
+  category  String      @db.VarChar(100)
+  users     UserSkill[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@map("skills")
+}
+
+model UserSkill {
   id        Int      @id @default(autoincrement())
-  bio       String?  @db.Text
-  avatarUrl String?  @db.VarChar(500)
-  userId    Int      @unique
+  userId    Int
+  skillId   Int
+  level     Level    @default(BEGINNER)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill     Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("profiles")
+  @@unique([userId, skillId])
+  @@map("user_skills")
 }
