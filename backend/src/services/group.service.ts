@@ -3,6 +3,8 @@ import type { Level } from "@prisma/client";
 import { groupRepository } from "../repositories/group.repository";
 import { skillRepository } from "../repositories/skill.repository";
 import { AppError } from "../utils/AppError";
+import { notificationService } from "./notification.service";
+import { logService } from "./log.service";
 
 interface CreateGroupInput {
   name: string;
@@ -86,6 +88,15 @@ export const groupService = {
     }
 
     await groupRepository.join(userId, groupId);
+
+    await notificationService.createNotification({
+      userId,
+      type: "GROUP_JOINED",
+      title: "Groupe rejoint",
+      content: `Vous avez rejoint le groupe ${group.name}.`,
+    });
+
+    await logService.activity("JOIN_GROUP", { userId }, "GROUP", groupId);
 
     return {
       message: "Vous avez rejoint le groupe",

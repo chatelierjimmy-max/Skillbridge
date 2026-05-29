@@ -2,6 +2,8 @@ import { BookingStatus } from "@prisma/client";
 import { sessionRepository } from "../repositories/session.repository";
 import { groupRepository } from "../repositories/group.repository";
 import { AppError } from "../utils/AppError";
+import { notificationService } from "./notification.service";
+import { logService } from "./log.service";
 
 interface CreateSessionInput {
   title: string;
@@ -72,6 +74,25 @@ export const sessionService = {
     });
 
     await sessionRepository.createBooking(userId, session.id);
+
+    await logService.activity("CREATE_SESSION", { userId }, "SESSION", session.id);
+
+    const group = await groupRepository.findById(groupId);
+
+    if (group) {
+      await Promise.all(
+        group.members
+          .filter((member) => member.user.id !== userId)
+          .map((member) =>
+            notificationService.createNotification({
+              userId: member.user.id,
+              type: "SESSION_CREATED",
+              title: "Nouvelle session",
+              content: `Une nouvelle session a été créée dans le groupe ${group.name}.`,
+            }),
+          ),
+      );
+    }
 
     return session;
   },

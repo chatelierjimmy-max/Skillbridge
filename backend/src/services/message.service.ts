@@ -3,6 +3,7 @@ import { messageRepository } from "../repositories/message.repository";
 import { groupRepository } from "../repositories/group.repository";
 import { userRepository } from "../repositories/user.repository";
 import { AppError } from "../utils/AppError";
+import { logService } from "./log.service";
 
 interface CreateMessageInput {
   content: string;
@@ -67,6 +68,8 @@ export const messageService = {
       content: data.content,
     });
 
+    await logService.activity("SEND_MESSAGE", { userId }, "MESSAGE", message.id);
+
     return {
       id: message.id,
       groupId: message.groupId,
@@ -104,6 +107,8 @@ export const messageService = {
     }
 
     await messageRepository.softDelete(messageId);
+
+    await logService.activity("DELETE_MESSAGE", { userId }, "MESSAGE", messageId);
 
     return {
       message: "Message supprimé",

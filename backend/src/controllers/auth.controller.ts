@@ -4,7 +4,12 @@ import { authService } from "../services/auth.service";
 export const authController = {
   async register(req: Request, res: Response, next: NextFunction) {
     try {
-      await authService.register(req.body);
+      const context = {
+        ipAddress: req.ip,
+        userAgent: req.headers["user-agent"],
+      };
+
+      await authService.register(req.body, context);
 
       res.status(201).json({
         message: "Compte créé avec succès",
@@ -16,7 +21,12 @@ export const authController = {
 
   async login(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await authService.login(req.body);
+      const context = {
+        ipAddress: req.ip,
+        userAgent: req.headers["user-agent"],
+      };
+
+      const result = await authService.login(req.body, context);
 
       res.status(200).json(result);
     } catch (error) {
