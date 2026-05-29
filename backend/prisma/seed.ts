@@ -7,6 +7,7 @@ const skills = [
   { name: "TypeScript", category: "Front-end" },
   { name: "React", category: "Front-end" },
   { name: "Node.js", category: "Back-end" },
+  { name: "Python", category: "Back-end" },
   { name: "Express", category: "Back-end" },
   { name: "MySQL", category: "Database" },
   { name: "MongoDB", category: "Database" },
