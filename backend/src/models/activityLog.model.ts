@@ -4,6 +4,8 @@ export type ActivityAction =
   | "REGISTER"
   | "LOGIN"
   | "UPDATE_PROFILE"
+  | "DISABLE_USER"
+  | "ENABLE_USER"
   | "CREATE_GROUP"
   | "JOIN_GROUP"
   | "LEAVE_GROUP"
@@ -31,6 +33,8 @@ const activityLogSchema = new Schema<IActivityLog>(
         "REGISTER",
         "LOGIN",
         "UPDATE_PROFILE",
+        "DISABLE_USER",
+        "ENABLE_USER",
         "CREATE_GROUP",
         "JOIN_GROUP",
         "LEAVE_GROUP",

@@ -7,6 +7,7 @@ import groupRoutes from "./group.routes";
 import sessionRoutes from "./session.routes";
 import messageRoutes from "./message.routes";
 import notificationRoutes from "./notification.routes";
+import adminRoutes from "./admin.routes";
 
 const router = Router();
 
@@ -25,5 +26,6 @@ router.use("/groups", groupRoutes);
 router.use("/", sessionRoutes);
 router.use("/", messageRoutes);
 router.use("/", notificationRoutes);
+router.use("/admin", adminRoutes);
 
 export default router;
