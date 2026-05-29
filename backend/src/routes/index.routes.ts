@@ -5,6 +5,7 @@ import skillRoutes from "./skill.routes";
 import searchRoutes from "./search.routes";
 import groupRoutes from "./group.routes";
 import sessionRoutes from "./session.routes";
+import messageRoutes from "./message.routes";
 
 const router = Router();
 
@@ -21,5 +22,6 @@ router.use("/users", skillRoutes);
 router.use("/users", searchRoutes);
 router.use("/groups", groupRoutes);
 router.use("/", sessionRoutes);
+router.use("/", messageRoutes);
 
 export default router;
