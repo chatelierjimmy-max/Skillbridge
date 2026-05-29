@@ -14,7 +14,7 @@ interface CreateSessionInput {
 }
 
 export const sessionService = {
-  async getGroupSessions(groupId: number) {
+  async getGroupSessions(userId: number, groupId: number) {
     const group = await groupRepository.findById(groupId);
 
     if (!group) {
@@ -31,6 +31,9 @@ export const sessionService = {
       duration: session.duration,
       maxParticipants: session.maxParticipants,
       registeredCount: session.bookings.length,
+      isRegistered: session.bookings.some(
+        (booking) => booking.userId === userId,
+      ),
       creator: session.creator,
     }));
   },

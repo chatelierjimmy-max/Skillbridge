@@ -44,8 +44,8 @@ npm test
 
 Le script compile d'abord TypeScript vers `dist`, puis Jest lance les tests dans `tests/api.integration.test.cjs`.
 
-## Donnees creees
+## Données créées
 
-Le test cree des utilisateurs avec des emails uniques en `@test.local`. En fin de test, il supprime ces utilisateurs et les documents MongoDB relies au test.
+Le test crée des utilisateurs avec des emails uniques en `@test.local`. En fin de test, il supprime ces utilisateurs et les documents MongoDB relies au test.
 
-Tes comptes existants ne sont pas utilises comme donnees de test. Le compte admin de test est cree temporairement puis supprime.
+Tes comptes existants ne sont pas utilisés comme données de test. Le compte admin de test est crée temporairement puis supprime.

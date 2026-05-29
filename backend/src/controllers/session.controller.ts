@@ -5,6 +5,7 @@ export const sessionController = {
   async getGroupSessions(req: Request, res: Response, next: NextFunction) {
     try {
       const sessions = await sessionService.getGroupSessions(
+        req.user.id,
         Number(req.params.groupId),
       );
 
