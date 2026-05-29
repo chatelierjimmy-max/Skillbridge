@@ -23,7 +23,7 @@ export const notificationRepository = {
     return NotificationModel.findOneAndUpdate(
       { _id: id, userId },
       { isRead: true },
-      { new: true },
+      { returnDocument: "after" },
     );
   },
 };

@@ -32,7 +32,7 @@ export const messageRepository = {
     return MessageModel.findByIdAndUpdate(
       id,
       { isDeleted: true },
-      { new: true },
+      { returnDocument: "after" },
     );
   },
 };
