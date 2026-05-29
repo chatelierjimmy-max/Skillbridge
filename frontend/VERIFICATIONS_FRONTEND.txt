@@ -1,0 +1,602 @@
+VERIFICATIONS FRONTEND - SKILLBRIDGE
+====================================
+
+Dossier a ouvrir dans le terminal
+---------------------------------
+Commande :
+cd "C:\Users\elcor\Desktop\exam titre pro\skillbridge\frontend"
+
+A quoi ca sert :
+Toutes les commandes frontend doivent etre lancees depuis ce dossier.
+
+
+1. Verifier que le backend est lance
+------------------------------------
+URL navigateur ou Postman :
+http://localhost:5000/api/health
+
+Resultat attendu :
+{
+  "status": "ok",
+  "message": "SkillBridge API is running"
+}
+
+A quoi ca sert :
+Le frontend appelle l'API backend. Si le backend ne tourne pas, login, dashboard, groupes, sessions et admin ne fonctionneront pas.
+
+
+2. Verifier le fichier d'environnement frontend
+-----------------------------------------------
+Fichier :
+frontend/.env
+
+Valeur attendue :
+VITE_API_URL=http://localhost:5000/api
+
+A quoi ca sert :
+Indique a Axios l'adresse de l'API backend.
+
+
+3. Installer les dependances frontend
+-------------------------------------
+Commande :
+npm install
+
+Resultat attendu :
+Installation terminee sans erreur bloquante.
+
+A quoi ca sert :
+Installe React, Vite, Axios, React Router, React Hook Form, Zod, Tailwind et Lucide.
+
+
+4. Lancer le frontend en developpement
+--------------------------------------
+Commande :
+npm run dev
+
+URL attendue :
+http://localhost:5173
+
+A quoi ca sert :
+Demarre l'application React avec Vite.
+
+
+5. Verifier la compilation frontend
+-----------------------------------
+Commande :
+npm run build
+
+Resultat attendu :
+Build termine sans erreur TypeScript.
+
+A quoi ca sert :
+Verifie que le frontend est compilable pour la production.
+
+
+6. Verifier le lint frontend
+----------------------------
+Commande :
+npm run lint
+
+Resultat attendu :
+Aucune erreur ESLint.
+
+A quoi ca sert :
+Verifie la qualite du code, les hooks React, les imports de types et les erreurs courantes.
+
+
+7. Verifier la page publique
+----------------------------
+URL navigateur :
+http://localhost:5173
+
+Resultat attendu :
+La page d'accueil SkillBridge s'affiche.
+
+A quoi ca sert :
+Confirme que React, Vite, le router et le layout public fonctionnent.
+
+
+8. Verifier les routes d'authentification
+-----------------------------------------
+URLs :
+http://localhost:5173/login
+http://localhost:5173/register
+
+Resultat attendu :
+Les formulaires Connexion et Inscription s'affichent.
+
+A quoi ca sert :
+Verifie que les pages auth sont accessibles hors connexion.
+
+
+9. Tester l'inscription depuis le navigateur
+--------------------------------------------
+URL :
+http://localhost:5173/register
+
+Exemple :
+Prenom : Alex
+Nom : Martin
+Email : alex@mail.com
+Mot de passe : Password123
+
+Resultat attendu :
+Le compte est cree, puis l'utilisateur est redirige ou peut aller sur /login.
+
+A quoi ca sert :
+Verifie le formulaire RegisterPage, la validation Zod, Axios et l'endpoint /api/auth/register.
+
+
+10. Tester la connexion
+-----------------------
+URL :
+http://localhost:5173/login
+
+Compte exemple :
+Email : chatelierjimmy@gmail.com
+Mot de passe : Password123
+
+Resultat attendu :
+Redirection vers :
+http://localhost:5173/dashboard
+
+A quoi ca sert :
+Verifie LoginPage, useAuth, auth.service, localStorage et le token JWT.
+
+
+11. Verifier le localStorage apres connexion
+--------------------------------------------
+Dans Chrome :
+F12 -> Application -> Local Storage -> http://localhost:5173
+
+Cles attendues :
+- accessToken
+- user
+
+A quoi ca sert :
+Confirme que le frontend conserve la session utilisateur.
+
+
+12. Tester la protection des routes privees
+-------------------------------------------
+Sans etre connecte, ouvrir :
+http://localhost:5173/dashboard
+http://localhost:5173/profile
+http://localhost:5173/groups
+
+Resultat attendu :
+Redirection vers /login.
+
+A quoi ca sert :
+Verifie PrivateRoute.
+
+
+13. Tester la redirection si deja connecte
+------------------------------------------
+Une fois connecte, ouvrir :
+http://localhost:5173/login
+http://localhost:5173/register
+
+Resultat attendu :
+Redirection vers /dashboard.
+
+A quoi ca sert :
+Evite qu'un utilisateur connecte retourne sur les pages login/register.
+
+
+14. Tester le logout
+--------------------
+Action :
+Cliquer sur le bouton Deconnexion dans AppLayout.
+
+Resultat attendu :
+- accessToken supprime du localStorage
+- user supprime du localStorage
+- redirection vers /login
+
+A quoi ca sert :
+Verifie le flux de deconnexion et la suppression de session.
+
+
+15. Tester le dashboard
+-----------------------
+URL :
+http://localhost:5173/dashboard
+
+Resultat attendu :
+Affichage :
+- nombre de groupes
+- nombre de sessions
+- nombre de competences
+- notifications non lues
+- prochaines sessions
+- resume du profil
+
+A quoi ca sert :
+Verifie les appels :
+- /api/users/me/profile
+- /api/users/me/skills
+- /api/users/me/sessions
+- /api/notifications
+- /api/groups/me
+
+
+16. Tester le profil
+--------------------
+URL :
+http://localhost:5173/profile
+
+Actions :
+- Modifier la bio
+- Modifier le niveau
+- Modifier la ville
+- Modifier les disponibilites
+- Ajouter React
+- Ajouter Node.js
+- Ajouter MySQL
+- Ajouter MongoDB
+- Ajouter Python
+
+Resultat attendu :
+Les donnees sont sauvegardees et restent visibles apres rechargement.
+
+A quoi ca sert :
+Verifie ProfilePage, profile.service, skill.service et les endpoints utilisateur.
+
+
+17. Tester les libelles de niveau
+---------------------------------
+Pages a verifier :
+http://localhost:5173/profile
+http://localhost:5173/search
+http://localhost:5173/groups
+
+Resultat attendu :
+Les niveaux s'affichent en francais :
+- BEGINNER -> Debutant
+- INTERMEDIATE -> Intermediaire
+- ADVANCED -> Avance
+
+A quoi ca sert :
+Verifie frontend/src/utils/levelLabel.ts.
+
+
+18. Tester la recherche
+-----------------------
+URL :
+http://localhost:5173/search
+
+Exemple de filtres :
+- Competence : React
+- Niveau : Debutant
+- Ville : Paris
+
+Resultat attendu :
+Une liste d'apprenants correspondant aux filtres.
+
+A quoi ca sert :
+Verifie SearchPage, search.service et l'endpoint /api/users/search.
+
+
+19. Tester les groupes
+----------------------
+URL :
+http://localhost:5173/groups
+
+Actions :
+- Creer un groupe
+- Voir la liste des groupes
+- Cliquer sur "Voir le groupe"
+
+Exemple :
+Nom : React debutants
+Description : Groupe d'entraide pour progresser sur React.
+Niveau : Debutant
+Competence : React
+
+Resultat attendu :
+Le groupe apparait dans la liste.
+
+A quoi ca sert :
+Verifie GroupsPage, group.service et les endpoints /api/groups.
+
+
+20. Tester le detail d'un groupe
+--------------------------------
+URL :
+http://localhost:5173/groups/1
+
+Resultat attendu :
+Affichage :
+- nom du groupe
+- description
+- competence
+- niveau
+- membres
+- actions Sessions du groupe et Messagerie
+
+A quoi ca sert :
+Verifie GroupDetailPage et GET /api/groups/:id.
+
+
+21. Tester rejoindre/quitter un groupe
+--------------------------------------
+URL :
+http://localhost:5173/groups/1
+
+Actions :
+- Avec un utilisateur non membre : cliquer Rejoindre
+- Avec un membre non proprietaire : cliquer Quitter
+
+Resultat attendu :
+Le bouton et la liste des membres se mettent a jour.
+
+A quoi ca sert :
+Verifie POST /api/groups/:id/join et DELETE /api/groups/:id/leave.
+
+
+22. Tester les sessions d'un groupe
+-----------------------------------
+URL :
+http://localhost:5173/groups/1/sessions
+
+Action creation :
+Titre : Introduction aux hooks React
+Date : demain ou plus tard
+Duree : 90
+Participants : 8
+
+Resultat attendu :
+La session apparait dans la liste.
+
+A quoi ca sert :
+Verifie GroupSessionsPage et POST /api/groups/:id/sessions.
+
+
+23. Tester l'inscription a une session
+--------------------------------------
+URL :
+http://localhost:5173/groups/1/sessions
+
+Action :
+Cliquer sur "S'inscrire" avec un compte membre du groupe.
+
+Resultat attendu :
+- message "Inscription confirmee"
+- bouton remplace par "Inscrit" si l'utilisateur est deja inscrit
+
+A quoi ca sert :
+Verifie POST /api/sessions/:id/book et le champ isRegistered.
+
+
+24. Tester mes sessions
+-----------------------
+URL :
+http://localhost:5173/sessions
+
+Resultat attendu :
+Les sessions reservees apparaissent.
+
+Action :
+Cliquer sur "Annuler ma participation".
+
+Resultat attendu apres annulation :
+La session disparait de la page Mes sessions.
+
+A quoi ca sert :
+Verifie SessionsPage, GET /api/users/me/sessions et DELETE /api/sessions/:id/book.
+
+
+25. Tester la messagerie
+------------------------
+URL :
+http://localhost:5173/groups/1/messages
+
+Message :
+Salut, on travaille React ce soir ?
+
+Resultat attendu :
+Le message apparait dans la conversation.
+
+A quoi ca sert :
+Verifie GroupMessagesPage, message.service et MongoDB.
+
+
+26. Tester la suppression d'un message
+--------------------------------------
+URL :
+http://localhost:5173/groups/1/messages
+
+Action :
+Cliquer sur l'icone poubelle de son message.
+
+Resultat attendu :
+Le message disparait de l'interface.
+
+Verification Mongo Express :
+http://localhost:8081
+Base : skillbridge
+Collection : messages
+
+Resultat attendu :
+isDeleted = true
+
+A quoi ca sert :
+Verifie la suppression logique d'un message.
+
+
+27. Tester les notifications
+----------------------------
+URL :
+http://localhost:5173/notifications
+
+Actions :
+- Voir la liste des notifications
+- Cliquer sur "Marquer comme lue"
+
+Resultat attendu :
+La notification passe en lue et le compteur diminue.
+
+A quoi ca sert :
+Verifie NotificationsPage et PATCH /api/notifications/:id/read.
+
+
+28. Tester les routes admin
+---------------------------
+Compte admin :
+Email : chatelierjimmy@gmail.com
+Mot de passe : Password123
+
+URLs :
+http://localhost:5173/admin/users
+http://localhost:5173/admin/logs
+
+Resultat attendu :
+Les pages admin s'affichent seulement si le compte est ADMIN.
+
+A quoi ca sert :
+Verifie AdminRoute.
+
+
+29. Tester la gestion admin des utilisateurs
+--------------------------------------------
+URL :
+http://localhost:5173/admin/users
+
+Actions :
+- Desactiver un utilisateur non admin
+- Reactiver le meme utilisateur
+
+Resultat attendu :
+Le statut passe de ACTIVE a DISABLED puis revient a ACTIVE.
+
+A quoi ca sert :
+Verifie AdminUsersPage, admin.service et les endpoints admin.
+
+
+30. Tester les logs admin
+-------------------------
+URL :
+http://localhost:5173/admin/logs
+
+Actions :
+- Onglet Activite
+- Onglet Securite
+
+Resultat attendu :
+Les logs MongoDB s'affichent.
+
+A quoi ca sert :
+Verifie AdminLogsPage, activitylogs et securitylogs.
+
+
+31. Verifier les routes principales
+-----------------------------------
+Routes publiques :
+- /
+- /login
+- /register
+
+Routes privees :
+- /dashboard
+- /profile
+- /search
+- /groups
+- /groups/:id
+- /groups/:id/sessions
+- /groups/:id/messages
+- /sessions
+- /notifications
+
+Routes admin :
+- /admin/users
+- /admin/logs
+
+A quoi ca sert :
+Verifie AppRouter.tsx.
+
+Note importante :
+L'application importe :
+frontend/src/routes/AppRouter.tsx
+
+Il existe aussi :
+frontend/src/routes/Approuter.tsx
+
+Ce deuxieme fichier peut creer une confusion, car il n'est pas celui utilise par App.tsx.
+
+
+32. Verifier les services API
+-----------------------------
+Fichiers :
+- frontend/src/services/api.ts
+- frontend/src/services/auth.service.tsx
+- frontend/src/services/profile.service.ts
+- frontend/src/services/skill.service.ts
+- frontend/src/services/search.service.ts
+- frontend/src/services/group.service.ts
+- frontend/src/services/session.service.ts
+- frontend/src/services/message.service.ts
+- frontend/src/services/notification.service.ts
+- frontend/src/services/admin.service.ts
+
+Points a verifier :
+- Les URLs commencent par /api cote backend via VITE_API_URL
+- Le token est ajoute automatiquement dans Authorization
+- Une erreur 401 supprime la session et redirige vers /login
+
+A quoi ca sert :
+Centralise les appels HTTP avec Axios.
+
+
+33. Verifier les types TypeScript
+---------------------------------
+Fichiers :
+- frontend/src/types/auth.type.ts
+- frontend/src/types/profile.type.ts
+- frontend/src/types/skill.type.ts
+- frontend/src/types/search.type.ts
+- frontend/src/types/group.type.ts
+- frontend/src/types/session.type.ts
+- frontend/src/types/message.type.ts
+- frontend/src/types/notification.type.ts
+- frontend/src/types/admin.type.ts
+
+A quoi ca sert :
+Evite les erreurs entre les donnees recues du backend et l'affichage React.
+
+
+34. Verifier les erreurs API
+----------------------------
+Fichier :
+frontend/src/utils/apiError.ts
+
+A quoi ca sert :
+Permet d'afficher les erreurs backend proprement sans utiliser any partout.
+
+
+35. Commandes utiles rapides
+----------------------------
+Frontend :
+cd "C:\Users\elcor\Desktop\exam titre pro\skillbridge\frontend"
+npm install
+npm run dev
+npm run build
+npm run lint
+npm run preview
+
+Backend :
+cd "C:\Users\elcor\Desktop\exam titre pro\skillbridge\backend"
+npm run dev
+npm test
+
+Racine projet :
+cd "C:\Users\elcor\Desktop\exam titre pro\skillbridge"
+docker compose up -d
+docker compose ps
+
+URLs :
+Frontend : http://localhost:5173
+API health : http://localhost:5000/api/health
+phpMyAdmin : http://localhost:8080
+Mongo Express : http://localhost:8081

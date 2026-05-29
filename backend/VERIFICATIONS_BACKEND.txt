@@ -1,0 +1,543 @@
+VERIFICATIONS BACKEND - SKILLBRIDGE
+===================================
+
+Dossier a ouvrir dans le terminal
+---------------------------------
+Commande :
+cd "C:\Users\elcor\Desktop\exam titre pro\skillbridge\backend"
+
+A quoi ca sert :
+Toutes les commandes backend doivent etre lancees depuis ce dossier.
+
+
+1. Verifier que Docker est lance
+--------------------------------
+Commande depuis la racine du projet :
+cd "C:\Users\elcor\Desktop\exam titre pro\skillbridge"
+docker compose ps
+
+Resultat attendu :
+Les services doivent etre en etat Running :
+- skillbridge_mysql
+- skillbridge_mongodb
+- skillbridge_phpmyadmin
+- skillbridge_mongo_express
+
+A quoi ca sert :
+Le backend utilise MySQL pour Prisma et MongoDB pour les messages, notifications et logs.
+
+URLs utiles :
+- phpMyAdmin : http://localhost:8080
+- Mongo Express : http://localhost:8081
+
+
+2. Verifier les variables d'environnement
+-----------------------------------------
+Fichier :
+backend/.env
+
+Valeurs importantes :
+- PORT=5000
+- DATABASE_URL=mysql://...
+- MONGO_URI=mongodb://localhost:27017/skillbridge
+- JWT_SECRET=...
+- FRONTEND_URL=http://localhost:5173
+
+A quoi ca sert :
+Le backend ne peut pas demarrer correctement sans la connexion MySQL, MongoDB et JWT.
+
+
+3. Installer les dependances backend
+------------------------------------
+Commande :
+npm install
+
+Resultat attendu :
+Installation terminee sans erreur bloquante.
+
+A quoi ca sert :
+Installe Express, Prisma, Mongoose, JWT, Jest, Supertest, etc.
+
+
+4. Generer Prisma Client
+------------------------
+Commande :
+npx prisma generate
+
+Resultat attendu :
+Prisma Client genere sans erreur.
+
+A quoi ca sert :
+Permet au backend TypeScript d'utiliser les modeles Prisma.
+
+
+5. Appliquer les migrations Prisma
+----------------------------------
+Commande :
+npx prisma migrate dev
+
+Resultat attendu :
+La base MySQL est synchronisee avec backend/prisma/schema.prisma.
+
+A quoi ca sert :
+Creer ou mettre a jour les tables :
+- users
+- profiles
+- skills
+- user_skills
+- groups
+- group_members
+- sessions
+- bookings
+
+
+6. Ajouter les donnees de base
+------------------------------
+Commande :
+npx prisma db seed
+
+Resultat attendu :
+Les competences sont ajoutees ou mises a jour.
+
+A quoi ca sert :
+Prepare les competences de base comme React, Node.js, MySQL, MongoDB, Python, etc.
+
+
+7. Lancer le serveur backend
+----------------------------
+Commande :
+npm run dev
+
+Resultat attendu dans le terminal :
+- MongoDB connected
+- Server running on port 5000
+
+A quoi ca sert :
+Demarre l'API Express en mode developpement.
+
+
+8. Verifier que l'API tourne
+----------------------------
+URL navigateur ou Postman :
+GET http://localhost:5000/api/health
+
+Commande PowerShell possible :
+Invoke-RestMethod http://localhost:5000/api/health
+
+Resultat attendu :
+{
+  "status": "ok",
+  "message": "SkillBridge API is running"
+}
+
+A quoi ca sert :
+Confirme que le serveur Express repond bien.
+
+
+9. Tester l'inscription
+-----------------------
+URL Postman :
+POST http://localhost:5000/api/auth/register
+
+Body JSON :
+{
+  "firstname": "Alex",
+  "lastname": "Martin",
+  "email": "alex@mail.com",
+  "password": "Password123"
+}
+
+Resultat attendu :
+{
+  "message": "Compte cree avec succes"
+}
+
+A quoi ca sert :
+Verifie la creation d'un utilisateur, le hash du mot de passe et les logs de securite.
+
+
+10. Tester la connexion
+-----------------------
+URL Postman :
+POST http://localhost:5000/api/auth/login
+
+Body JSON :
+{
+  "email": "alex@mail.com",
+  "password": "Password123"
+}
+
+Resultat attendu :
+{
+  "user": {
+    "id": 1,
+    "firstname": "Alex",
+    "lastname": "Martin",
+    "email": "alex@mail.com",
+    "role": "USER"
+  },
+  "accessToken": "..."
+}
+
+A quoi ca sert :
+Verifie le login, le JWT et les logs de connexion.
+
+
+11. Verifier l'utilisateur connecte
+-----------------------------------
+URL Postman :
+GET http://localhost:5000/api/auth/me
+
+Header :
+Authorization: Bearer TOKEN
+
+Resultat attendu :
+Les informations de l'utilisateur connecte.
+
+A quoi ca sert :
+Verifie que le token JWT est valide.
+
+
+12. Tester les competences utilisateur
+--------------------------------------
+Lister les competences :
+GET http://localhost:5000/api/users/skills
+Authorization: Bearer TOKEN
+
+Ajouter une competence :
+POST http://localhost:5000/api/users/me/skills
+Authorization: Bearer TOKEN
+
+Body JSON :
+{
+  "skillId": 5,
+  "level": "BEGINNER"
+}
+
+Voir mes competences :
+GET http://localhost:5000/api/users/me/skills
+Authorization: Bearer TOKEN
+
+A quoi ca sert :
+Verifie la gestion des competences d'un utilisateur.
+
+
+13. Tester le profil utilisateur
+--------------------------------
+URL Postman :
+PUT http://localhost:5000/api/users/me/profile
+Authorization: Bearer TOKEN
+
+Body JSON :
+{
+  "bio": "Etudiant DWWM, je travaille React et Node.js.",
+  "level": "BEGINNER",
+  "availability": "Soirs et week-end",
+  "location": "Paris"
+}
+
+A quoi ca sert :
+Verifie la creation ou mise a jour du profil utilisateur.
+
+
+14. Tester la recherche utilisateur
+-----------------------------------
+URL Postman :
+GET http://localhost:5000/api/users/search?skill=React&level=BEGINNER&city=Paris
+Authorization: Bearer TOKEN
+
+Resultat attendu :
+Une liste d'utilisateurs correspondant aux filtres.
+
+A quoi ca sert :
+Verifie la recherche par competence, niveau et ville.
+
+
+15. Tester les groupes
+----------------------
+Creer un groupe :
+POST http://localhost:5000/api/groups
+Authorization: Bearer TOKEN
+
+Body JSON :
+{
+  "name": "React debutants",
+  "description": "Groupe d'entraide pour progresser sur React.",
+  "level": "BEGINNER",
+  "skillId": 5
+}
+
+Lister les groupes :
+GET http://localhost:5000/api/groups
+Authorization: Bearer TOKEN
+
+Voir un groupe :
+GET http://localhost:5000/api/groups/1
+Authorization: Bearer TOKEN
+
+Voir mes groupes :
+GET http://localhost:5000/api/groups/me
+Authorization: Bearer TOKEN
+
+Rejoindre un groupe :
+POST http://localhost:5000/api/groups/1/join
+Authorization: Bearer TOKEN
+
+Quitter un groupe :
+DELETE http://localhost:5000/api/groups/1/leave
+Authorization: Bearer TOKEN
+
+A quoi ca sert :
+Verifie la creation, lecture et adhesion aux groupes.
+
+
+16. Tester les sessions
+-----------------------
+Creer une session :
+POST http://localhost:5000/api/groups/1/sessions
+Authorization: Bearer TOKEN
+
+Body JSON :
+{
+  "title": "Introduction aux hooks React",
+  "description": "Decouverte de useState et useEffect",
+  "startDate": "2026-06-05T18:00:00.000Z",
+  "duration": 90,
+  "maxParticipants": 8
+}
+
+Lister les sessions d'un groupe :
+GET http://localhost:5000/api/groups/1/sessions
+Authorization: Bearer TOKEN
+
+S'inscrire :
+POST http://localhost:5000/api/sessions/1/book
+Authorization: Bearer TOKEN
+
+Voir mes sessions :
+GET http://localhost:5000/api/users/me/sessions
+Authorization: Bearer TOKEN
+
+Annuler :
+DELETE http://localhost:5000/api/sessions/1/book
+Authorization: Bearer TOKEN
+
+A quoi ca sert :
+Verifie la planification, inscription et annulation de sessions.
+
+
+17. Tester les messages de groupe
+---------------------------------
+Envoyer un message :
+POST http://localhost:5000/api/groups/1/messages
+Authorization: Bearer TOKEN
+
+Body JSON :
+{
+  "content": "Salut, on travaille React ce soir ?"
+}
+
+Lire les messages :
+GET http://localhost:5000/api/groups/1/messages
+Authorization: Bearer TOKEN
+
+Supprimer un message :
+DELETE http://localhost:5000/api/messages/ID_MESSAGE
+Authorization: Bearer TOKEN
+
+Verification Mongo Express :
+http://localhost:8081
+Base : skillbridge
+Collection : messages
+
+Resultat attendu apres suppression :
+isDeleted = true
+
+A quoi ca sert :
+Verifie la messagerie MongoDB et la suppression logique.
+
+
+18. Tester les notifications
+----------------------------
+Voir ses notifications :
+GET http://localhost:5000/api/notifications
+Authorization: Bearer TOKEN
+
+Marquer comme lue :
+PATCH http://localhost:5000/api/notifications/ID_NOTIFICATION/read
+Authorization: Bearer TOKEN
+
+Verification Mongo Express :
+http://localhost:8081
+Base : skillbridge
+Collection : notifications
+
+A quoi ca sert :
+Verifie les notifications generees par les groupes, sessions et actions admin.
+
+
+19. Tester l'administration
+---------------------------
+Rendre ton compte admin :
+UPDATE users
+SET role = 'ADMIN'
+WHERE email = 'chatelierjimmy@gmail.com';
+
+Se connecter avec ce compte :
+POST http://localhost:5000/api/auth/login
+
+Lister les utilisateurs :
+GET http://localhost:5000/api/admin/users
+Authorization: Bearer TOKEN_ADMIN
+
+Desactiver un utilisateur :
+PATCH http://localhost:5000/api/admin/users/2/disable
+Authorization: Bearer TOKEN_ADMIN
+
+Reactiver un utilisateur :
+PATCH http://localhost:5000/api/admin/users/2/enable
+Authorization: Bearer TOKEN_ADMIN
+
+Logs d'activite :
+GET http://localhost:5000/api/admin/logs/activity
+Authorization: Bearer TOKEN_ADMIN
+
+Logs de securite :
+GET http://localhost:5000/api/admin/logs/security
+Authorization: Bearer TOKEN_ADMIN
+
+A quoi ca sert :
+Verifie que seules les personnes ADMIN peuvent gerer les utilisateurs et consulter les logs.
+
+
+20. Verifier les collections MongoDB
+------------------------------------
+URL :
+http://localhost:8081
+
+Base :
+skillbridge
+
+Collections attendues :
+- messages
+- notifications
+- activitylogs
+- securitylogs
+
+A quoi ca sert :
+MongoDB stocke les donnees non relationnelles : messages, notifications et logs.
+
+
+21. Verifier Prisma Studio
+--------------------------
+Commande :
+npx prisma studio
+
+URL affichee dans le terminal :
+http://localhost:XXXXX
+
+A quoi ca sert :
+Permet de voir et modifier les tables MySQL visuellement.
+
+
+22. Verifier le build backend
+-----------------------------
+Commande :
+npm run build
+
+Resultat attendu :
+Aucune erreur TypeScript.
+
+A quoi ca sert :
+Verifie que le code backend est compilable pour la production.
+
+
+23. Lancer les tests backend
+----------------------------
+Commande :
+npm test
+
+Commande alternative plus stable :
+npm test -- --runInBand
+
+Resultat attendu :
+Test Suites: 1 passed
+Tests: 6 passed
+
+A quoi ca sert :
+Verifie automatiquement les parcours principaux :
+- health
+- auth
+- profil et competences
+- groupes, sessions, messages, notifications
+- administration
+- securite du role admin
+
+
+24. Mode surveillance des tests
+-------------------------------
+Commande :
+npm run test:watch
+
+A quoi ca sert :
+Relance automatiquement les tests quand un fichier change.
+
+
+25. Rate limiting
+-----------------
+Fichier :
+backend/src/middlewares/rateLimit.middleware.ts
+
+Configuration attendue :
+- globalRateLimiter : 100 requetes / 15 minutes
+- authRateLimiter : 10 tentatives / 15 minutes
+
+Routes protegees :
+- Toutes les routes via app.use(globalRateLimiter)
+- POST /api/auth/login
+- POST /api/auth/register
+
+A quoi ca sert :
+Limite les abus et protege surtout les routes de connexion et d'inscription.
+
+
+26. Securite HTTP
+-----------------
+Fichier :
+backend/src/app.ts
+
+Verification :
+app.use(helmet())
+app.use(cors(...))
+app.use(express.json({ limit: "1mb" }))
+
+A quoi ca sert :
+- Helmet ajoute des headers de securite.
+- CORS limite les origines autorisees.
+- express.json limite la taille des payloads JSON.
+
+
+27. Commandes utiles rapides
+----------------------------
+Backend :
+cd "C:\Users\elcor\Desktop\exam titre pro\skillbridge\backend"
+npm run dev
+npm run build
+npm test
+npm run test:watch
+npx prisma generate
+npx prisma migrate dev
+npx prisma db seed
+npx prisma studio
+
+Racine projet :
+cd "C:\Users\elcor\Desktop\exam titre pro\skillbridge"
+docker compose up -d
+docker compose ps
+docker compose logs -f
+
+URLs :
+API health : http://localhost:5000/api/health
+Frontend : http://localhost:5173
+phpMyAdmin : http://localhost:8080
+Mongo Express : http://localhost:8081
