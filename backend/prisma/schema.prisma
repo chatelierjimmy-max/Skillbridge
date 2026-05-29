@@ -27,6 +27,11 @@ enum GroupRole {
   MEMBER
 }
 
+enum BookingStatus {
+  REGISTERED
+  CANCELLED
+}
+
 model User {
   id               Int           @id @default(autoincrement())
   firstname        String        @db.VarChar(100)
@@ -39,6 +44,8 @@ model User {
   skills           UserSkill[]
   ownedGroups      Group[]       @relation("GroupOwner")
   groupMemberships GroupMember[]
+  createdSessions  Session[]     @relation("SessionCreator")
+  bookings         Booking[]
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
 
@@ -96,6 +103,7 @@ model Group {
   owner       User          @relation("GroupOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   skill       Skill         @relation(fields: [skillId], references: [id], onDelete: Cascade)
   members     GroupMember[]
+  sessions    Session[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
@@ -113,4 +121,35 @@ model GroupMember {
 
   @@unique([userId, groupId])
   @@map("group_members")
+}
+
+model Session {
+  id              Int       @id @default(autoincrement())
+  title           String    @db.VarChar(150)
+  description     String?   @db.Text
+  startDate       DateTime
+  duration        Int
+  maxParticipants Int?
+  groupId         Int
+  createdBy       Int
+  group           Group     @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  creator         User      @relation("SessionCreator", fields: [createdBy], references: [id], onDelete: Cascade)
+  bookings        Booking[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("sessions")
+}
+
+model Booking {
+  id        Int           @id @default(autoincrement())
+  userId    Int
+  sessionId Int
+  status    BookingStatus @default(REGISTERED)
+  bookedAt  DateTime      @default(now())
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  session   Session       @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, userId])
+  @@map("bookings")
 }
