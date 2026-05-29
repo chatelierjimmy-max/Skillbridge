@@ -22,18 +22,25 @@ enum Level {
   ADVANCED
 }
 
+enum GroupRole {
+  OWNER
+  MEMBER
+}
+
 model User {
-  id        Int        @id @default(autoincrement())
-  firstname String     @db.VarChar(100)
-  lastname  String     @db.VarChar(100)
-  email     String     @unique @db.VarChar(255)
-  password  String     @db.VarChar(255)
-  role      UserRole   @default(USER)
-  status    UserStatus @default(ACTIVE)
-  profile   Profile?
-  skills    UserSkill[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  id               Int           @id @default(autoincrement())
+  firstname        String        @db.VarChar(100)
+  lastname         String        @db.VarChar(100)
+  email            String        @unique @db.VarChar(255)
+  password         String        @db.VarChar(255)
+  role             UserRole      @default(USER)
+  status           UserStatus    @default(ACTIVE)
+  profile          Profile?
+  skills           UserSkill[]
+  ownedGroups      Group[]       @relation("GroupOwner")
+  groupMemberships GroupMember[]
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
 
   @@map("users")
 }
@@ -58,6 +65,7 @@ model Skill {
   name      String      @unique @db.VarChar(100)
   category  String      @db.VarChar(100)
   users     UserSkill[]
+  groups    Group[]
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
 
@@ -76,4 +84,33 @@ model UserSkill {
 
   @@unique([userId, skillId])
   @@map("user_skills")
+}
+
+model Group {
+  id          Int           @id @default(autoincrement())
+  name        String        @db.VarChar(150)
+  description String?       @db.Text
+  level       Level
+  ownerId     Int
+  skillId     Int
+  owner       User          @relation("GroupOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  skill       Skill         @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  members     GroupMember[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@map("groups")
+}
+
+model GroupMember {
+  id       Int       @id @default(autoincrement())
+  userId   Int
+  groupId  Int
+  role     GroupRole @default(MEMBER)
+  joinedAt DateTime  @default(now())
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group    Group     @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, groupId])
+  @@map("group_members")
 }
