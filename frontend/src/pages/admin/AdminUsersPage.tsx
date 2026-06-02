@@ -147,7 +147,7 @@ export default function AdminUsersPage() {
                     ) : user.status === "ACTIVE" ? (
                       <button
                         onClick={() => handleDisable(user.id)}
-                        className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-3 py-2 text-xs font-medium text-white"
+                        className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-3 py-2 text-xs font-medium text-white transition-colors duration-200 hover:bg-red-700"
                       >
                         <UserX className="h-4 w-4" />
                         Désactiver
@@ -155,7 +155,7 @@ export default function AdminUsersPage() {
                     ) : (
                       <button
                         onClick={() => handleEnable(user.id)}
-                        className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-3 py-2 text-xs font-medium text-white"
+                        className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-3 py-2 text-xs font-medium text-white transition-colors duration-200 hover:bg-green-700"
                       >
                         <UserCheck className="h-4 w-4" />
                         Réactiver

@@ -161,7 +161,7 @@ export default function GroupsPage() {
           </div>
 
           <div className="md:col-span-2">
-            <button className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white">
+            <button className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700">
               Créer le groupe
             </button>
           </div>
@@ -208,7 +208,7 @@ export default function GroupsPage() {
 
                 <Link
                   to={`/groups/${group.id}`}
-                  className="mt-5 inline-block rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white"
+                  className="mt-5 inline-block rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700"
                 >
                   Voir le groupe
                 </Link>

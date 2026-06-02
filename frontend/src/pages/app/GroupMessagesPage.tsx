@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Send, Trash2 } from "lucide-react";
+import { Send, Trash2, Users } from "lucide-react";
 
 import { messageService } from "../../services/message.service";
 import { groupService } from "../../services/group.service";
@@ -122,11 +122,11 @@ export default function GroupMessagesPage() {
         ← Retour au groupe
       </Link>
 
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Messagerie — {group.name}</h1>
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl font-bold">SkillBridge - Messagerie collaborative</h1>
 
         <p className="mt-2 text-slate-600">
-          Échange avec les membres du groupe.
+          Échange directement avec les membres de ton groupe.
         </p>
       </div>
 
@@ -142,53 +142,66 @@ export default function GroupMessagesPage() {
         </div>
       )}
 
-      <section className="flex h-[650px] flex-col rounded-2xl border bg-white shadow-sm">
-        <div className="border-b px-6 py-4">
-          <h2 className="text-lg font-semibold">Conversation</h2>
+      <div className="grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
+        <aside className="rounded-2xl border bg-white p-5 shadow-sm">
+          <div className="flex items-center gap-2">
+            <Users className="h-5 w-5 text-blue-600" />
+            <h2 className="font-semibold">Membres du groupe</h2>
+          </div>
 
-          <p className="text-sm text-slate-500">{messages.length} message(s)</p>
-        </div>
+          <ul className="mt-5 space-y-3 text-sm">
+            {group.members.map((member) => (
+              <li key={member.id} className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-blue-600" />
+                <span>
+                  {member.firstname} {member.lastname}
+                  {member.id === user?.id ? " (moi)" : ""}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </aside>
 
-        <div className="flex-1 space-y-4 overflow-y-auto p-6">
-          {messages.length === 0 ? (
-            <div className="flex h-full items-center justify-center text-center text-slate-500">
-              Aucun message pour le moment.
-            </div>
-          ) : (
-            messages.map((message) => {
-              const isMine = message.userId === user?.id;
+        <section className="flex h-[650px] flex-col rounded-2xl border bg-white shadow-sm">
+          <div className="border-b px-6 py-4 text-center">
+            <h2 className="text-lg font-semibold">{group.name}</h2>
 
-              return (
-                <div
-                  key={message.id}
-                  className={`flex ${isMine ? "justify-end" : "justify-start"}`}
-                >
+            <p className="text-sm text-slate-500">{messages.length} message(s)</p>
+          </div>
+
+          <div className="flex-1 space-y-4 overflow-y-auto p-6">
+            {messages.length === 0 ? (
+              <div className="flex h-full items-center justify-center text-center text-slate-500">
+                Aucun message pour le moment. Écris le premier message du groupe.
+              </div>
+            ) : (
+              messages.map((message) => {
+                const isMine = message.userId === user?.id;
+
+                return (
                   <div
-                    className={`max-w-[80%] rounded-2xl p-4 ${
-                      isMine
-                        ? "bg-blue-600 text-white"
-                        : "bg-slate-100 text-slate-900"
+                    key={message.id}
+                    className={`rounded-lg border p-4 ${
+                      isMine ? "border-blue-200 bg-blue-50" : "bg-white"
                     }`}
                   >
-                    <div className="mb-2 flex items-center justify-between gap-4">
-                      <p
-                        className={`text-xs font-semibold ${
-                          isMine ? "text-blue-100" : "text-slate-500"
-                        }`}
-                      >
-                        {message.author
-                          ? `${message.author.firstname} ${message.author.lastname}`
-                          : "Utilisateur inconnu"}
+                    <div className="flex items-start justify-between gap-4">
+                      <p className="text-sm">
+                        <strong>
+                          {isMine
+                            ? "Moi"
+                            : message.author
+                              ? `${message.author.firstname} ${message.author.lastname}`
+                              : "Utilisateur inconnu"}
+                          {" : "}
+                        </strong>
+                        <span className="whitespace-pre-wrap">{message.content}</span>
                       </p>
 
                       {canDeleteMessage(message) && (
                         <button
                           onClick={() => handleDeleteMessage(message.id)}
-                          className={`rounded p-1 ${
-                            isMine
-                              ? "text-blue-100 hover:bg-blue-700"
-                              : "text-slate-500 hover:bg-slate-200"
-                          }`}
+                          className="rounded p-1 text-slate-500 transition-colors duration-200 hover:bg-red-100 hover:text-red-700"
                           title="Supprimer"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -196,51 +209,44 @@ export default function GroupMessagesPage() {
                       )}
                     </div>
 
-                    <p className="whitespace-pre-wrap text-sm">
-                      {message.content}
-                    </p>
-
-                    <p
-                      className={`mt-2 text-right text-xs ${
-                        isMine ? "text-blue-100" : "text-slate-500"
-                      }`}
-                    >
+                    <p className="mt-2 text-right text-xs text-slate-500">
                       {new Date(message.createdAt).toLocaleString()}
                     </p>
                   </div>
-                </div>
-              );
-            })
-          )}
+                );
+              })
+            )}
 
-          <div ref={bottomRef} />
-        </div>
-
-        <form onSubmit={handleSendMessage} className="border-t p-4">
-          <div className="flex gap-3">
-            <textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              maxLength={1000}
-              placeholder="Écrire un message..."
-              className="min-h-14 flex-1 resize-none rounded-lg border px-4 py-3"
-            />
-
-            <button
-              type="submit"
-              disabled={sending || !content.trim()}
-              className="flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 font-medium text-white disabled:opacity-50"
-            >
-              <Send className="h-4 w-4" />
-              Envoyer
-            </button>
+            <div ref={bottomRef} />
           </div>
 
-          <p className="mt-2 text-right text-xs text-slate-500">
-            {content.length}/1000
-          </p>
-        </form>
-      </section>
+          <form onSubmit={handleSendMessage} className="border-t p-4">
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <input
+                type="text"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                maxLength={1000}
+                placeholder="Écrire un message..."
+                className="min-h-12 flex-1 rounded-lg border px-4 py-3"
+              />
+
+              <button
+                type="submit"
+                disabled={sending || !content.trim()}
+                className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <Send className="h-4 w-4" />
+                {sending ? "Envoi..." : "Envoyer"}
+              </button>
+            </div>
+
+            <p className="mt-2 text-right text-xs text-slate-500">
+              {content.length}/1000
+            </p>
+          </form>
+        </section>
+      </div>
     </div>
   );
 }

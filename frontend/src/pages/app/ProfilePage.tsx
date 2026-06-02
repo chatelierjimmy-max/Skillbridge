@@ -164,7 +164,7 @@ export default function ProfilePage() {
               />
             </div>
 
-            <button className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white">
+            <button className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700">
               Enregistrer le profil
             </button>
           </form>
@@ -203,7 +203,7 @@ export default function ProfilePage() {
             <button
               type="submit"
               disabled={!selectedSkillId || isAddingSkill}
-              className="rounded-lg bg-slate-900 px-5 py-3 text-white disabled:cursor-not-allowed disabled:bg-slate-400"
+              className="rounded-lg bg-blue-600 px-5 py-3 text-white transition-colors duration-200 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400"
             >
               {isAddingSkill ? "Ajout..." : "Ajouter"}
             </button>
@@ -224,7 +224,7 @@ export default function ProfilePage() {
 
                 <button
                   onClick={() => handleRemoveSkill(skill.id)}
-                  className="text-sm font-medium text-red-600"
+                  className="rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-red-700"
                 >
                   Supprimer
                 </button>

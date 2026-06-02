@@ -123,7 +123,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full rounded-lg bg-blue-600 px-4 py-3 font-medium text-white"
+            className="w-full rounded-lg bg-blue-600 px-4 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700"
           >
             {isSubmitting ? "Inscription..." : "Créer mon compte"}
           </button>

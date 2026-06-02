@@ -123,7 +123,7 @@ export default function GroupDetailPage() {
             {!isMember && (
               <button
                 onClick={handleJoin}
-                className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white"
+                className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700"
               >
                 Rejoindre
               </button>
@@ -132,7 +132,7 @@ export default function GroupDetailPage() {
             {isMember && !isOwner && (
               <button
                 onClick={handleLeave}
-                className="rounded-lg bg-red-600 px-5 py-3 font-medium text-white"
+                className="rounded-lg bg-red-600 px-5 py-3 font-medium text-white transition-colors duration-200 hover:bg-red-700"
               >
                 Quitter
               </button>
@@ -182,7 +182,7 @@ export default function GroupDetailPage() {
           <div className="mt-5 space-y-3">
             <Link
               to={`/groups/${group.id}/sessions`}
-              className="flex items-center gap-2 rounded-lg border px-4 py-3 text-sm font-medium"
+              className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700"
             >
               <Calendar className="h-4 w-4" />
               Sessions du groupe
@@ -190,7 +190,7 @@ export default function GroupDetailPage() {
 
             <Link
               to={`/groups/${group.id}/messages`}
-              className="flex items-center gap-2 rounded-lg border px-4 py-3 text-sm font-medium"
+              className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700"
             >
               <MessageCircle className="h-4 w-4" />
               Messagerie

@@ -190,7 +190,7 @@ export default function GroupSessionsPage() {
           </div>
 
           <div className="md:col-span-2">
-            <button className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white">
+            <button className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700">
               Créer la session
             </button>
           </div>
@@ -250,7 +250,7 @@ export default function GroupSessionsPage() {
                 ) : (
                   <button
                     onClick={() => handleBook(session.id)}
-                    className="mt-5 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white"
+                    className="mt-5 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700"
                   >
                     S’inscrire
                   </button>

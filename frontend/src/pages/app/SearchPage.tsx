@@ -139,7 +139,7 @@ export default function SearchPage() {
           <div className="flex items-end gap-2">
             <button
               type="submit"
-              className="flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 font-medium text-white"
+              className="flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700"
             >
               <Search className="h-4 w-4" />
               Rechercher
@@ -150,7 +150,7 @@ export default function SearchPage() {
         <button
           type="button"
           onClick={resetFilters}
-          className="mt-4 text-sm font-medium text-slate-600"
+          className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700"
         >
           Réinitialiser les filtres
         </button>

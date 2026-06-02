@@ -47,10 +47,10 @@ export default function AdminLogsPage() {
       <div className="mb-6 flex gap-3">
         <button
           onClick={() => setActiveTab("activity")}
-          className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium ${
+          className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200 ${
             activeTab === "activity"
-              ? "bg-blue-600 text-white"
-              : "border bg-white"
+              ? "bg-blue-600 text-white hover:bg-blue-700"
+              : "border bg-white hover:bg-blue-50"
           }`}
         >
           <Activity className="h-4 w-4" />
@@ -59,10 +59,10 @@ export default function AdminLogsPage() {
 
         <button
           onClick={() => setActiveTab("security")}
-          className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium ${
+          className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200 ${
             activeTab === "security"
-              ? "bg-blue-600 text-white"
-              : "border bg-white"
+              ? "bg-blue-600 text-white hover:bg-blue-700"
+              : "border bg-white hover:bg-blue-50"
           }`}
         >
           <ShieldAlert className="h-4 w-4" />
