@@ -1,10 +1,28 @@
+// Import de l'enum BookingStatus générée par Prisma.
+// Elle représente les états possibles d'une réservation.
 import { BookingStatus } from "@prisma/client";
+
+// Repository des sessions.
+// Il centralise les opérations liées aux sessions et réservations.
 import { sessionRepository } from "../repositories/session.repository";
+
+// Repository des groupes.
+// Utilisé pour vérifier l'existence des groupes et les adhésions.
 import { groupRepository } from "../repositories/group.repository";
+
+// Classe d'erreur personnalisée.
+// Permet de lever des erreurs HTTP métier contrôlées.
 import { AppError } from "../utils/AppError";
+
+// Service de notifications.
 import { notificationService } from "./notification.service";
+
+// Service de journalisation.
 import { logService } from "./log.service";
 
+/**
+ * Données nécessaires à la création d'une session.
+ */
 interface CreateSessionInput {
   title: string;
   description?: string;
@@ -13,7 +31,25 @@ interface CreateSessionInput {
   maxParticipants?: number;
 }
 
+/**
+ * Service métier des sessions.
+ *
+ * Gère :
+ * - la consultation des sessions d'un groupe
+ * - la création de sessions
+ * - l'inscription à une session
+ * - l'annulation d'une réservation
+ * - la liste des sessions de l'utilisateur connecté
+ */
 export const sessionService = {
+  /**
+   * Récupère les sessions d'un groupe.
+   *
+   * Retourne aussi :
+   * - le nombre d'inscrits
+   * - si l'utilisateur connecté est déjà inscrit
+   * - les informations du créateur
+   */
   async getGroupSessions(userId: number, groupId: number) {
     const group = await groupRepository.findById(groupId);
 
@@ -30,14 +66,28 @@ export const sessionService = {
       startDate: session.startDate,
       duration: session.duration,
       maxParticipants: session.maxParticipants,
+
+      // Nombre de réservations actives.
       registeredCount: session.bookings.length,
+
+      // Indique si l'utilisateur connecté est inscrit à cette session.
       isRegistered: session.bookings.some(
         (booking) => booking.userId === userId,
       ),
+
       creator: session.creator,
     }));
   },
 
+  /**
+   * Crée une session dans un groupe.
+   *
+   * Règles :
+   * - l'utilisateur doit être membre du groupe ;
+   * - la date doit être valide ;
+   * - la session doit être planifiée dans le futur ;
+   * - le créateur est automatiquement inscrit.
+   */
   async createSession(
     userId: number,
     groupId: number,
@@ -76,12 +126,19 @@ export const sessionService = {
       createdBy: userId,
     });
 
+    // Le créateur est automatiquement inscrit à sa propre session.
     await sessionRepository.createBooking(userId, session.id);
 
-    await logService.activity("CREATE_SESSION", { userId }, "SESSION", session.id);
+    await logService.activity(
+      "CREATE_SESSION",
+      { userId },
+      "SESSION",
+      session.id,
+    );
 
     const group = await groupRepository.findById(groupId);
 
+    // Notification envoyée à tous les autres membres du groupe.
     if (group) {
       await Promise.all(
         group.members
@@ -100,6 +157,11 @@ export const sessionService = {
     return session;
   },
 
+  /**
+   * Inscrit un utilisateur à une session.
+   *
+   * Gère aussi le cas d'une réservation précédemment annulée.
+   */
   async bookSession(userId: number, sessionId: number) {
     const session = await sessionRepository.findById(sessionId);
 
@@ -154,6 +216,12 @@ export const sessionService = {
     };
   },
 
+  /**
+   * Annule l'inscription d'un utilisateur à une session.
+   *
+   * La réservation n'est pas supprimée :
+   * son statut passe à CANCELLED.
+   */
   async cancelBooking(userId: number, sessionId: number) {
     const session = await sessionRepository.findById(sessionId);
 
@@ -184,6 +252,10 @@ export const sessionService = {
     };
   },
 
+  /**
+   * Récupère toutes les sessions auxquelles
+   * l'utilisateur connecté est inscrit.
+   */
   async getMySessions(userId: number) {
     const bookings = await sessionRepository.findUserSessions(userId);
 
