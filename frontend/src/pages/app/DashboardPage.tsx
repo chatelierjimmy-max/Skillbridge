@@ -1,35 +1,62 @@
+// Importation des hooks React
+// useState : gestion des états locaux
+// useEffect : exécution d'actions lors du cycle de vie du composant
 import { useEffect, useState } from "react";
+
+// Importation des icônes Lucide utilisées dans les cartes statistiques
 import { Calendar, MessageCircle, Users, Bell } from "lucide-react";
+
+// Link permet la navigation entre les pages sans rechargement
 import { Link } from "react-router-dom";
 
+// Hook personnalisé permettant d'accéder aux informations de l'utilisateur connecté
 import { useAuth } from "../../hooks/useAuth";
 
+// Services permettant de communiquer avec l'API
 import { profileService } from "../../services/profile.service";
 import { skillService } from "../../services/skill.service";
 import { sessionService } from "../../services/session.service";
 import { notificationService } from "../../services/notification.service";
 import { groupService } from "../../services/group.service";
 
+// Types TypeScript utilisés pour typer les données récupérées
 import type { Profile } from "../../types/profile.type";
 import type { UserSkill } from "../../types/skill.type";
 import type { MySession } from "../../types/session.type";
 import type { AppNotification } from "../../types/notification.type";
 import type { MyGroup } from "../../types/group.type";
 
+// Composant principal du tableau de bord
 export default function DashboardPage() {
+  // Récupération des informations de l'utilisateur connecté
   const { user } = useAuth();
 
+  // État contenant le profil utilisateur
   const [profile, setProfile] = useState<Profile | null>(null);
+
+  // Liste des compétences de l'utilisateur
   const [skills, setSkills] = useState<UserSkill[]>([]);
+
+  // Liste des sessions auxquelles l'utilisateur participe
   const [sessions, setSessions] = useState<MySession[]>([]);
+
+  // Liste des notifications
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
+
+  // Liste des groupes de l'utilisateur
   const [groups, setGroups] = useState<MyGroup[]>([]);
 
+  // État indiquant si les données sont en cours de chargement
   const [loading, setLoading] = useState(true);
 
+  /**
+   * Chargement initial des données du dashboard
+   */
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
+        // Exécution parallèle de toutes les requêtes API
+        // Promise.all améliore les performances
         const [
           profileData,
           skillsData,
@@ -44,31 +71,44 @@ export default function DashboardPage() {
           groupService.getMyGroups(),
         ]);
 
+        // Mise à jour des états avec les données reçues
         setProfile(profileData);
         setSkills(skillsData);
         setSessions(sessionsData);
         setNotifications(notificationsData);
         setGroups(groupsData);
       } finally {
+        // Fin du chargement
         setLoading(false);
       }
     };
 
+    // Exécution de la récupération des données
     fetchDashboard();
   }, []);
 
+  /**
+   * Affichage pendant le chargement
+   */
   if (loading) {
     return <p>Chargement du dashboard...</p>;
   }
 
+  /**
+   * Nombre de notifications non lues
+   */
   const unreadCount = notifications.filter(
     (notification) => !notification.isRead,
   ).length;
 
+  /**
+   * Sélection des 3 prochaines sessions
+   */
   const nextSessions = sessions.slice(0, 3);
 
   return (
     <div>
+      {/* En-tête du dashboard */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Bonjour {user?.firstname}</h1>
 
@@ -77,53 +117,70 @@ export default function DashboardPage() {
         </p>
       </div>
 
+      {/* Cartes statistiques principales */}
       <div className="grid gap-4 md:grid-cols-4">
+        {/* Nombre de groupes */}
         <Link
           to="/groups"
           className="rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-1"
         >
           <Users className="mb-3 h-6 w-6 text-blue-600" />
+
           <p className="text-sm text-slate-500">Mes groupes</p>
+
           <p className="text-2xl font-bold">{groups.length}</p>
         </Link>
 
+        {/* Nombre de sessions */}
         <Link
           to="/sessions"
           className="rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-1"
         >
           <Calendar className="mb-3 h-6 w-6 text-blue-600" />
+
           <p className="text-sm text-slate-500">Sessions</p>
+
           <p className="text-2xl font-bold">{sessions.length}</p>
         </Link>
 
+        {/* Nombre de compétences */}
         <Link
           to="/groups"
           className="rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-1"
         >
           <MessageCircle className="mb-3 h-6 w-6 text-blue-600" />
+
           <p className="text-sm text-slate-500">Compétences</p>
+
           <p className="text-2xl font-bold">{skills.length}</p>
         </Link>
 
+        {/* Nombre de notifications non lues */}
         <Link
           to="/notifications"
           className="rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-1"
         >
           <Bell className="mb-3 h-6 w-6 text-blue-600" />
+
           <p className="text-sm text-slate-500">Non lues</p>
+
           <p className="text-2xl font-bold">{unreadCount}</p>
         </Link>
       </div>
 
+      {/* Zone principale du dashboard */}
       <div className="mt-8 grid gap-6 lg:grid-cols-3">
+        {/* Section des prochaines sessions */}
         <section className="rounded-2xl border bg-white p-6 shadow-sm lg:col-span-2">
           <h2 className="text-xl font-semibold">Prochaines sessions</h2>
 
+          {/* Cas où aucune session n'existe */}
           {nextSessions.length === 0 ? (
             <p className="mt-4 text-sm text-slate-600">
               Aucune session à venir.
             </p>
           ) : (
+            // Liste des prochaines sessions
             <div className="mt-5 space-y-3">
               {nextSessions.map((session) => (
                 <div key={session.id} className="rounded-lg border p-4">
@@ -138,6 +195,7 @@ export default function DashboardPage() {
             </div>
           )}
 
+          {/* Lien vers toutes les sessions */}
           <Link
             to="/sessions"
             className="mt-5 inline-block text-sm font-medium text-blue-600"
@@ -146,6 +204,7 @@ export default function DashboardPage() {
           </Link>
         </section>
 
+        {/* Carte profil utilisateur */}
         <section className="rounded-2xl border bg-white p-6 shadow-sm">
           <h2 className="text-xl font-semibold">Mon profil</h2>
 
@@ -164,6 +223,7 @@ export default function DashboardPage() {
             </p>
           </div>
 
+          {/* Lien vers l'édition du profil */}
           <Link
             to="/profile"
             className="mt-5 inline-block text-sm font-medium text-blue-600"
@@ -173,18 +233,22 @@ export default function DashboardPage() {
         </section>
       </div>
 
+      {/* Section notifications récentes */}
       <section className="mt-8 rounded-2xl border bg-white p-6 shadow-sm">
         <h2 className="text-xl font-semibold">Notifications récentes</h2>
 
+        {/* Cas où aucune notification n'existe */}
         {notifications.length === 0 ? (
           <p className="mt-4 text-sm text-slate-600">Aucune notification.</p>
         ) : (
+          // Affichage des 3 dernières notifications
           <div className="mt-5 space-y-3">
             {notifications.slice(0, 3).map((notification) => (
               <div key={notification._id} className="rounded-lg border p-4">
                 <div className="flex items-center justify-between">
                   <p className="font-medium">{notification.title}</p>
 
+                  {/* Badge notification non lue */}
                   {!notification.isRead && (
                     <span className="rounded-full bg-blue-100 px-2 py-1 text-xs text-blue-700">
                       Nouveau
@@ -200,6 +264,7 @@ export default function DashboardPage() {
           </div>
         )}
 
+        {/* Lien vers toutes les notifications */}
         <Link
           to="/notifications"
           className="mt-5 inline-block text-sm font-medium text-blue-600"

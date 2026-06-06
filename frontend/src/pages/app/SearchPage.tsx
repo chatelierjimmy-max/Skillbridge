@@ -1,54 +1,96 @@
+// Importation des hooks React
+// useState : gestion des états locaux
+// useEffect : exécution d'une action au montage du composant
 import { useEffect, useState } from "react";
+
+// Importation des icônes utilisées dans l'interface
 import { Search, MapPin, UserRound } from "lucide-react";
 
+// Service API pour rechercher des apprenants
 import { searchService } from "../../services/search.service";
+
+// Service API pour récupérer la liste des compétences disponibles
 import { skillService } from "../../services/skill.service";
 
+// Types TypeScript utilisés pour les résultats et les filtres
 import type { LearnerResult, SearchFilters } from "../../types/search.type";
 import type { Skill } from "../../types/skill.type";
 import type { Level } from "../../types/profile.type";
 
+// Objet de traduction des niveaux techniques
 const levelLabel: Record<Level, string> = {
   BEGINNER: "Débutant",
   INTERMEDIATE: "Intermédiaire",
   ADVANCED: "Avancé",
 };
 
+// Page de recherche d'apprenants
 export default function SearchPage() {
+  // Liste des compétences disponibles dans le filtre
   const [skills, setSkills] = useState<Skill[]>([]);
+
+  // Filtres actuellement sélectionnés
   const [filters, setFilters] = useState<SearchFilters>({
     skill: "",
     level: "",
     city: "",
   });
 
+  // Résultats retournés par la recherche
   const [results, setResults] = useState<LearnerResult[]>([]);
+
+  // Indique si une recherche est en cours
   const [loading, setLoading] = useState(false);
+
+  // Indique si l'utilisateur a déjà lancé une recherche
+  // Permet d'éviter d'afficher "Aucun apprenant trouvé" avant la première recherche
   const [searched, setSearched] = useState(false);
 
+  /**
+   * Charge la liste des compétences au montage de la page.
+   */
   useEffect(() => {
     const fetchSkills = async () => {
+      // Récupération des compétences depuis l'API
       const data = await skillService.getAllSkills();
+
+      // Stockage des compétences dans l'état local
       setSkills(data);
     };
 
     fetchSkills();
   }, []);
 
+  /**
+   * Lance une recherche d'apprenants avec les filtres actuels.
+   *
+   * @param event Événement de soumission du formulaire
+   */
   const handleSearch = async (event: React.FormEvent) => {
+    // Empêche le rechargement de la page
     event.preventDefault();
 
+    // Active l'état de chargement
     setLoading(true);
+
+    // Indique qu'une recherche a déjà été effectuée
     setSearched(true);
 
     try {
+      // Appel API avec les filtres sélectionnés
       const data = await searchService.searchLearners(filters);
+
+      // Mise à jour des résultats
       setResults(data);
     } finally {
+      // Désactive le chargement, même en cas d'erreur
       setLoading(false);
     }
   };
 
+  /**
+   * Réinitialise tous les filtres et vide les résultats.
+   */
   const resetFilters = async () => {
     const emptyFilters: SearchFilters = {
       skill: "",
@@ -56,13 +98,19 @@ export default function SearchPage() {
       city: "",
     };
 
+    // Réinitialise les filtres
     setFilters(emptyFilters);
+
+    // Considère qu'aucune recherche n'est active
     setSearched(false);
+
+    // Vide les résultats affichés
     setResults([]);
   };
 
   return (
     <div>
+      {/* En-tête de la page */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Rechercher des apprenants</h1>
 
@@ -72,11 +120,13 @@ export default function SearchPage() {
         </p>
       </div>
 
+      {/* Bloc contenant le formulaire de recherche */}
       <section className="rounded-2xl border bg-white p-6 shadow-sm">
         <form
           onSubmit={handleSearch}
           className="grid gap-4 md:grid-cols-[1fr_1fr_1fr_auto]"
         >
+          {/* Filtre par compétence */}
           <div>
             <label className="mb-1 block text-sm font-medium">Compétence</label>
 
@@ -100,6 +150,7 @@ export default function SearchPage() {
             </select>
           </div>
 
+          {/* Filtre par niveau */}
           <div>
             <label className="mb-1 block text-sm font-medium">Niveau</label>
 
@@ -120,6 +171,7 @@ export default function SearchPage() {
             </select>
           </div>
 
+          {/* Filtre par ville */}
           <div>
             <label className="mb-1 block text-sm font-medium">Ville</label>
 
@@ -136,6 +188,7 @@ export default function SearchPage() {
             />
           </div>
 
+          {/* Bouton de recherche */}
           <div className="flex items-end gap-2">
             <button
               type="submit"
@@ -147,6 +200,7 @@ export default function SearchPage() {
           </div>
         </form>
 
+        {/* Bouton permettant de vider les filtres */}
         <button
           type="button"
           onClick={resetFilters}
@@ -156,18 +210,23 @@ export default function SearchPage() {
         </button>
       </section>
 
+      {/* Zone d'affichage des résultats */}
       <section className="mt-8">
+        {/* Message pendant la recherche */}
         {loading && <p className="text-slate-600">Recherche en cours...</p>}
 
+        {/* Aucun résultat après une recherche */}
         {!loading && searched && results.length === 0 && (
           <div className="rounded-2xl border bg-white p-8 text-center shadow-sm">
             <p className="font-medium">Aucun apprenant trouvé.</p>
+
             <p className="mt-2 text-sm text-slate-600">
               Essaie de modifier tes filtres.
             </p>
           </div>
         )}
 
+        {/* Résultats trouvés */}
         {!loading && results.length > 0 && (
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {results.map((learner) => (
@@ -175,6 +234,7 @@ export default function SearchPage() {
                 key={learner.id}
                 className="rounded-2xl border bg-white p-6 shadow-sm"
               >
+                {/* En-tête de la carte apprenant */}
                 <div className="flex items-start gap-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-700">
                     <UserRound className="h-6 w-6" />
@@ -192,6 +252,7 @@ export default function SearchPage() {
                   </div>
                 </div>
 
+                {/* Informations du profil */}
                 <div className="mt-4 space-y-2 text-sm text-slate-600">
                   <p>
                     <strong>Niveau :</strong>{" "}
@@ -211,6 +272,7 @@ export default function SearchPage() {
                   </p>
                 </div>
 
+                {/* Liste des compétences de l'apprenant */}
                 <div className="mt-4 flex flex-wrap gap-2">
                   {learner.skills.map((skill) => (
                     <span
