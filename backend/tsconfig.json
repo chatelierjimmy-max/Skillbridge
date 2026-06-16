@@ -11,7 +11,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "types": ["node"],
-    "typeRoots": ["./node_modules/@types", "./src/types"],
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
     "sourceMap": true
