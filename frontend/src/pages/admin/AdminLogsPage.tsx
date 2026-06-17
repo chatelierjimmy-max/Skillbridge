@@ -74,7 +74,7 @@ export default function AdminLogsPage() {
     <div>
       {/* Titre principal de la page */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Logs MongoDB</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">Logs MongoDB</h1>
 
         <p className="mt-2 text-slate-600">
           Consultation des logs d’activité et de sécurité.
@@ -82,11 +82,11 @@ export default function AdminLogsPage() {
       </div>
 
       {/* Boutons de navigation entre les onglets */}
-      <div className="mb-6 flex gap-3">
+      <div className="mb-6 grid grid-cols-2 gap-3 sm:flex">
         {/* Bouton Activité */}
         <button
           onClick={() => setActiveTab("activity")}
-          className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+          className={`flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200 ${
             activeTab === "activity"
               ? "bg-blue-600 text-white hover:bg-blue-700"
               : "border bg-white hover:bg-blue-50"
@@ -99,7 +99,7 @@ export default function AdminLogsPage() {
         {/* Bouton Sécurité */}
         <button
           onClick={() => setActiveTab("security")}
-          className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+          className={`flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200 ${
             activeTab === "security"
               ? "bg-blue-600 text-white hover:bg-blue-700"
               : "border bg-white hover:bg-blue-50"
@@ -117,7 +117,7 @@ export default function AdminLogsPage() {
       {activeTab === "activity" && (
         <section className="overflow-hidden rounded-2xl border bg-white shadow-sm">
           {/* En-tête du tableau */}
-          <div className="border-b px-6 py-4">
+          <div className="border-b px-4 py-4 sm:px-6">
             <h2 className="text-xl font-semibold">Logs d’activité</h2>
 
             <p className="text-sm text-slate-500">
@@ -127,7 +127,7 @@ export default function AdminLogsPage() {
 
           {/* Tableau responsive */}
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
+            <table className="min-w-[720px] w-full text-left text-sm">
               {/* Colonnes */}
               <thead className="bg-slate-50 text-slate-600">
                 <tr>
@@ -178,7 +178,7 @@ export default function AdminLogsPage() {
       {activeTab === "security" && (
         <section className="overflow-hidden rounded-2xl border bg-white shadow-sm">
           {/* En-tête du tableau */}
-          <div className="border-b px-6 py-4">
+          <div className="border-b px-4 py-4 sm:px-6">
             <h2 className="text-xl font-semibold">Logs de sécurité</h2>
 
             <p className="text-sm text-slate-500">
@@ -188,7 +188,7 @@ export default function AdminLogsPage() {
 
           {/* Tableau responsive */}
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
+            <table className="min-w-[720px] w-full text-left text-sm">
               {/* Colonnes */}
               <thead className="bg-slate-50 text-slate-600">
                 <tr>

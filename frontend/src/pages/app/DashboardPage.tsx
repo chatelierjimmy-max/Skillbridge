@@ -110,7 +110,7 @@ export default function DashboardPage() {
     <div>
       {/* En-tête du dashboard */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Bonjour {user?.firstname}</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">Bonjour {user?.firstname}</h1>
 
         <p className="mt-2 text-slate-600">
           Voici un aperçu de ton activité sur SkillBridge.
@@ -118,11 +118,11 @@ export default function DashboardPage() {
       </div>
 
       {/* Cartes statistiques principales */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {/* Nombre de groupes */}
         <Link
           to="/groups"
-          className="rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-1"
+          className="rounded-2xl border bg-white p-4 shadow-sm transition hover:-translate-y-1 sm:p-5"
         >
           <Users className="mb-3 h-6 w-6 text-blue-600" />
 
@@ -134,7 +134,7 @@ export default function DashboardPage() {
         {/* Nombre de sessions */}
         <Link
           to="/sessions"
-          className="rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-1"
+          className="rounded-2xl border bg-white p-4 shadow-sm transition hover:-translate-y-1 sm:p-5"
         >
           <Calendar className="mb-3 h-6 w-6 text-blue-600" />
 
@@ -146,7 +146,7 @@ export default function DashboardPage() {
         {/* Nombre de compétences */}
         <Link
           to="/groups"
-          className="rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-1"
+          className="rounded-2xl border bg-white p-4 shadow-sm transition hover:-translate-y-1 sm:p-5"
         >
           <MessageCircle className="mb-3 h-6 w-6 text-blue-600" />
 
@@ -158,7 +158,7 @@ export default function DashboardPage() {
         {/* Nombre de notifications non lues */}
         <Link
           to="/notifications"
-          className="rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-1"
+          className="rounded-2xl border bg-white p-4 shadow-sm transition hover:-translate-y-1 sm:p-5"
         >
           <Bell className="mb-3 h-6 w-6 text-blue-600" />
 
@@ -171,7 +171,7 @@ export default function DashboardPage() {
       {/* Zone principale du dashboard */}
       <div className="mt-8 grid gap-6 lg:grid-cols-3">
         {/* Section des prochaines sessions */}
-        <section className="rounded-2xl border bg-white p-6 shadow-sm lg:col-span-2">
+        <section className="rounded-2xl border bg-white p-4 shadow-sm sm:p-6 lg:col-span-2">
           <h2 className="text-xl font-semibold">Prochaines sessions</h2>
 
           {/* Cas où aucune session n'existe */}
@@ -205,7 +205,7 @@ export default function DashboardPage() {
         </section>
 
         {/* Carte profil utilisateur */}
-        <section className="rounded-2xl border bg-white p-6 shadow-sm">
+        <section className="rounded-2xl border bg-white p-4 shadow-sm sm:p-6">
           <h2 className="text-xl font-semibold">Mon profil</h2>
 
           <div className="mt-4 space-y-2 text-sm text-slate-600">
@@ -234,7 +234,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Section notifications récentes */}
-      <section className="mt-8 rounded-2xl border bg-white p-6 shadow-sm">
+      <section className="mt-8 rounded-2xl border bg-white p-4 shadow-sm sm:p-6">
         <h2 className="text-xl font-semibold">Notifications récentes</h2>
 
         {/* Cas où aucune notification n'existe */}
@@ -245,7 +245,7 @@ export default function DashboardPage() {
           <div className="mt-5 space-y-3">
             {notifications.slice(0, 3).map((notification) => (
               <div key={notification._id} className="rounded-lg border p-4">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                   <p className="font-medium">{notification.title}</p>
 
                   {/* Badge notification non lue */}

@@ -158,7 +158,7 @@ export default function ProfilePage() {
   return (
     <div>
       {/* Titre principal de la page */}
-      <h1 className="text-3xl font-bold">Mon profil</h1>
+      <h1 className="text-2xl font-bold sm:text-3xl">Mon profil</h1>
 
       {/* Message de succès */}
       {message && (
@@ -177,7 +177,7 @@ export default function ProfilePage() {
       {/* Layout principal en deux colonnes sur grand écran */}
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
         {/* Section des informations personnelles */}
-        <section className="rounded-2xl border bg-white p-6 shadow-sm">
+        <section className="rounded-2xl border bg-white p-4 shadow-sm sm:p-6">
           <h2 className="text-xl font-semibold">Informations personnelles</h2>
 
           <form onSubmit={handleProfileSubmit} className="mt-6 space-y-5">
@@ -193,7 +193,7 @@ export default function ProfilePage() {
                     bio: e.target.value,
                   })
                 }
-                className="min-h-28 w-full rounded-lg border px-4 py-3"
+                className="min-h-28 w-full w-full rounded-lg border px-4 py-3"
               />
             </div>
 
@@ -209,7 +209,7 @@ export default function ProfilePage() {
                     level: e.target.value as Level,
                   })
                 }
-                className="w-full rounded-lg border px-4 py-3"
+                className="w-full w-full rounded-lg border px-4 py-3"
               >
                 <option value="">Sélectionner</option>
                 <option value="BEGINNER">Débutant</option>
@@ -232,7 +232,7 @@ export default function ProfilePage() {
                     availability: e.target.value,
                   })
                 }
-                className="w-full rounded-lg border px-4 py-3"
+                className="w-full w-full rounded-lg border px-4 py-3"
               />
             </div>
 
@@ -248,19 +248,19 @@ export default function ProfilePage() {
                     location: e.target.value,
                   })
                 }
-                className="w-full rounded-lg border px-4 py-3"
+                className="w-full w-full rounded-lg border px-4 py-3"
               />
             </div>
 
             {/* Bouton d'enregistrement du profil */}
-            <button className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700">
+            <button className="w-full rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700 sm:w-auto">
               Enregistrer le profil
             </button>
           </form>
         </section>
 
         {/* Section des compétences */}
-        <section className="rounded-2xl border bg-white p-6 shadow-sm">
+        <section className="rounded-2xl border bg-white p-4 shadow-sm sm:p-6">
           <h2 className="text-xl font-semibold">Compétences</h2>
 
           {/* Formulaire d'ajout de compétence */}
@@ -272,7 +272,7 @@ export default function ProfilePage() {
             <select
               value={selectedSkillId}
               onChange={(e) => setSelectedSkillId(e.target.value)}
-              className="rounded-lg border px-4 py-3"
+              className="w-full rounded-lg border px-4 py-3"
             >
               <option value="">Compétence</option>
 
@@ -287,7 +287,7 @@ export default function ProfilePage() {
             <select
               value={selectedLevel}
               onChange={(e) => setSelectedLevel(e.target.value as Level)}
-              className="rounded-lg border px-4 py-3"
+              className="w-full rounded-lg border px-4 py-3"
             >
               <option value="BEGINNER">Débutant</option>
               <option value="INTERMEDIATE">Intermédiaire</option>
@@ -298,7 +298,7 @@ export default function ProfilePage() {
             <button
               type="submit"
               disabled={!selectedSkillId || isAddingSkill}
-              className="rounded-lg bg-blue-600 px-5 py-3 text-white transition-colors duration-200 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400"
+              className="w-full rounded-lg bg-blue-600 px-5 py-3 text-white transition-colors duration-200 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400 md:w-auto"
             >
               {isAddingSkill ? "Ajout..." : "Ajouter"}
             </button>
@@ -309,7 +309,7 @@ export default function ProfilePage() {
             {mySkills.map((skill) => (
               <div
                 key={skill.id}
-                className="flex items-center justify-between rounded-lg border p-3"
+                className="flex flex-col gap-3 rounded-lg border p-3 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div>
                   {/* Nom de la compétence */}
@@ -324,7 +324,7 @@ export default function ProfilePage() {
                 {/* Bouton de suppression */}
                 <button
                   onClick={() => handleRemoveSkill(skill.id)}
-                  className="rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-red-700"
+                  className="w-full rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-red-700 sm:w-auto"
                 >
                   Supprimer
                 </button>

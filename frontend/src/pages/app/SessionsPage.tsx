@@ -92,7 +92,7 @@ export default function SessionsPage() {
     <div>
       {/* En-tête de la page */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Mes sessions</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">Mes sessions</h1>
 
         <p className="mt-2 text-slate-600">
           Retrouve les sessions auxquelles tu es inscrit.
@@ -115,7 +115,7 @@ export default function SessionsPage() {
 
       {/* Cas où l'utilisateur n'est inscrit à aucune session */}
       {sessions.length === 0 ? (
-        <div className="rounded-2xl border bg-white p-8 text-center shadow-sm">
+        <div className="rounded-2xl border bg-white p-6 text-center shadow-sm sm:p-8">
           <p className="font-medium">Tu n’es inscrit à aucune session.</p>
 
           {/* Lien vers la liste des groupes pour découvrir des sessions */}
@@ -132,7 +132,7 @@ export default function SessionsPage() {
           {sessions.map((session) => (
             <article
               key={session.id}
-              className="rounded-2xl border bg-white p-6 shadow-sm"
+              className="rounded-2xl border bg-white p-4 shadow-sm sm:p-6"
             >
               {/* Titre de la session */}
               <h2 className="text-lg font-semibold">{session.title}</h2>
@@ -172,7 +172,7 @@ export default function SessionsPage() {
               {/* Bouton permettant d'annuler l'inscription */}
               <button
                 onClick={() => handleCancel(session.id)}
-                className="mt-5 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-red-700"
+                className="mt-5 w-full rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-red-700 sm:w-auto"
               >
                 Annuler ma participation
               </button>

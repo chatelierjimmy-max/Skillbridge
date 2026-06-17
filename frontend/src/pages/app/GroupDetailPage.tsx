@@ -173,11 +173,11 @@ export default function GroupDetailPage() {
       )}
 
       {/* Carte principale contenant les informations du groupe */}
-      <section className="rounded-2xl border bg-white p-6 shadow-sm">
+      <section className="rounded-2xl border bg-white p-4 shadow-sm sm:p-6">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-start">
           <div>
             {/* Nom du groupe */}
-            <h1 className="text-3xl font-bold">{group.name}</h1>
+            <h1 className="text-2xl font-bold sm:text-3xl">{group.name}</h1>
 
             {/* Description du groupe */}
             <p className="mt-2 text-slate-600">
@@ -201,7 +201,7 @@ export default function GroupDetailPage() {
           </div>
 
           {/* Zone d'action : rejoindre, quitter ou propriétaire */}
-          <div className="flex gap-3">
+          <div className="grid gap-3 sm:flex">
             {/* Si l'utilisateur n'est pas membre, il peut rejoindre */}
             {!isMember && (
               <button
@@ -235,7 +235,7 @@ export default function GroupDetailPage() {
       {/* Zone secondaire : membres + actions */}
       <div className="mt-8 grid gap-6 lg:grid-cols-3">
         {/* Liste des membres du groupe */}
-        <section className="rounded-2xl border bg-white p-6 shadow-sm lg:col-span-2">
+        <section className="rounded-2xl border bg-white p-4 shadow-sm sm:p-6 lg:col-span-2">
           <div className="mb-5 flex items-center gap-2">
             <Users className="h-5 w-5 text-blue-600" />
             <h2 className="text-xl font-semibold">Membres du groupe</h2>
@@ -246,7 +246,7 @@ export default function GroupDetailPage() {
             {group.members.map((member) => (
               <div
                 key={member.id}
-                className="flex items-center justify-between rounded-lg border p-3"
+                className="flex flex-col gap-3 rounded-lg border p-3 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div>
                   {/* Nom complet du membre */}
@@ -268,7 +268,7 @@ export default function GroupDetailPage() {
         </section>
 
         {/* Bloc contenant les actions disponibles pour ce groupe */}
-        <aside className="rounded-2xl border bg-white p-6 shadow-sm">
+        <aside className="rounded-2xl border bg-white p-4 shadow-sm sm:p-6">
           <h2 className="text-xl font-semibold">Actions</h2>
 
           <div className="mt-5 space-y-3">

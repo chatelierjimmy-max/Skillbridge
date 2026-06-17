@@ -116,13 +116,13 @@ export default function AdminUsersPage() {
     <div>
       {/* En-tête de la page */}
       <div className="mb-8">
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           {/* Icône administration */}
           <Shield className="h-8 w-8 text-blue-600" />
 
           <div>
             {/* Titre principal */}
-            <h1 className="text-3xl font-bold">Administration utilisateurs</h1>
+            <h1 className="text-2xl font-bold sm:text-3xl">Administration utilisateurs</h1>
 
             {/* Description */}
             <p className="mt-2 text-slate-600">
@@ -149,7 +149,7 @@ export default function AdminUsersPage() {
       {/* Carte contenant le tableau des utilisateurs */}
       <section className="overflow-hidden rounded-2xl border bg-white shadow-sm">
         {/* En-tête du tableau */}
-        <div className="border-b px-6 py-4">
+        <div className="border-b px-4 py-4 sm:px-6">
           <h2 className="text-xl font-semibold">Liste des utilisateurs</h2>
 
           <p className="text-sm text-slate-500">
@@ -159,7 +159,7 @@ export default function AdminUsersPage() {
 
         {/* Gestion du débordement horizontal sur petits écrans */}
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
+          <table className="min-w-[760px] w-full text-left text-sm">
             {/* En-tête des colonnes */}
             <thead className="bg-slate-50 text-slate-600">
               <tr>
@@ -223,7 +223,7 @@ export default function AdminUsersPage() {
                       // Bouton désactivation
                       <button
                         onClick={() => handleDisable(user.id)}
-                        className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-3 py-2 text-xs font-medium text-white transition-colors duration-200 hover:bg-red-700"
+                        className="inline-flex items-center justify-center gap-2 rounded-lg bg-red-600 px-3 py-2 text-xs font-medium text-white transition-colors duration-200 hover:bg-red-700"
                       >
                         <UserX className="h-4 w-4" />
                         Désactiver
@@ -232,7 +232,7 @@ export default function AdminUsersPage() {
                       // Bouton réactivation
                       <button
                         onClick={() => handleEnable(user.id)}
-                        className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-3 py-2 text-xs font-medium text-white transition-colors duration-200 hover:bg-green-700"
+                        className="inline-flex items-center justify-center gap-2 rounded-lg bg-green-600 px-3 py-2 text-xs font-medium text-white transition-colors duration-200 hover:bg-green-700"
                       >
                         <UserCheck className="h-4 w-4" />
                         Réactiver

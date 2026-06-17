@@ -84,10 +84,10 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="mx-auto max-w-md px-4 py-20">
+    <div className="mx-auto w-full max-w-md px-4 py-10 sm:py-16 lg:py-20">
       {/* Carte contenant le formulaire d'inscription */}
-      <div className="rounded-2xl border bg-white p-8 shadow-sm">
-        <h1 className="text-3xl font-bold">Créer un compte</h1>
+      <div className="rounded-2xl border bg-white p-5 shadow-sm sm:p-8">
+        <h1 className="text-2xl font-bold sm:text-3xl">Créer un compte</h1>
 
         <p className="mt-2 text-sm text-slate-600">Rejoins SkillBridge.</p>
 

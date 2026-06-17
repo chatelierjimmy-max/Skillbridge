@@ -175,7 +175,7 @@ export default function GroupSessionsPage() {
 
       {/* En-tête de la page */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Sessions du groupe</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">Sessions du groupe</h1>
 
         <p className="mt-2 text-slate-600">
           Planifie ou rejoins une session de travail.
@@ -197,7 +197,7 @@ export default function GroupSessionsPage() {
       )}
 
       {/* Formulaire de création d'une session */}
-      <section className="rounded-2xl border bg-white p-6 shadow-sm">
+      <section className="rounded-2xl border bg-white p-4 shadow-sm sm:p-6">
         <h2 className="text-xl font-semibold">Créer une session</h2>
 
         <form
@@ -280,7 +280,7 @@ export default function GroupSessionsPage() {
 
           {/* Bouton de soumission */}
           <div className="md:col-span-2">
-            <button className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700">
+            <button className="w-full rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700 sm:w-auto">
               Créer la session
             </button>
           </div>
@@ -293,7 +293,7 @@ export default function GroupSessionsPage() {
 
         {sessions.length === 0 ? (
           // Message si aucune session n'existe
-          <div className="rounded-2xl border bg-white p-8 text-center shadow-sm">
+          <div className="rounded-2xl border bg-white p-6 text-center shadow-sm sm:p-8">
             Aucune session disponible.
           </div>
         ) : (
@@ -302,7 +302,7 @@ export default function GroupSessionsPage() {
             {sessions.map((session) => (
               <article
                 key={session.id}
-                className="rounded-2xl border bg-white p-6 shadow-sm"
+                className="rounded-2xl border bg-white p-4 shadow-sm sm:p-6"
               >
                 {/* Titre de la session */}
                 <h3 className="text-lg font-semibold">{session.title}</h3>
@@ -348,7 +348,7 @@ export default function GroupSessionsPage() {
                 ) : (
                   <button
                     onClick={() => handleBook(session.id)}
-                    className="mt-5 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700"
+                    className="mt-5 w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700 sm:w-auto"
                   >
                     S’inscrire
                   </button>

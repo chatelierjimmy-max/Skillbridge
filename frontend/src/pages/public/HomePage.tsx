@@ -9,31 +9,31 @@ export default function HomePage() {
     // max-w-6xl : largeur maximale du contenu
     // flex-1 : occupe l'espace disponible dans le layout
     // clamp(...) : permet un espacement adaptatif selon la taille de l'écran
-    <section className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-[clamp(1.5rem,4vh,3rem)] px-4 pb-[clamp(1.5rem,4vh,3rem)] pt-[clamp(2rem,6vh,5rem)]">
+    <section className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-20">
       {/* Bloc de présentation */}
       <div>
         {/* Titre principal de la plateforme */}
-        <h1 className="mx-auto max-w-5xl text-justify text-4xl font-bold leading-relaxed tracking-tight text-slate-900 [text-align-last:center] md:text-5xl">
+        <h1 className="mx-auto max-w-5xl text-center text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
           Trouve des partenaires pour progresser en
           {/* Passage à la ligne avec mise en valeur */}
-          <span className="mt-6 block">développement web.</span>
+          <span className="mt-3 block sm:mt-4">développement web.</span>
         </h1>
 
         {/* Sous-titre expliquant l'objectif de la plateforme */}
-        <p className="mt-6 text-center text-lg text-slate-600">
+        <p className="mx-auto mt-6 max-w-3xl text-center text-base text-slate-600 sm:text-lg">
           SkillBridge permet aux apprenants de créer des groupes de travail,
           planifier des sessions et partager leurs compétences.
         </p>
       </div>
 
       {/* Bloc contenant les actions principales et les fonctionnalités */}
-      <div className="flex flex-col gap-[clamp(1.5rem,4vh,3rem)]">
+      <div className="flex flex-col gap-8">
         {/* Boutons d'action */}
-        <div className="flex justify-center gap-[clamp(2rem,5vw,4.5rem)]">
+        <div className="grid gap-3 sm:flex sm:justify-center sm:gap-5">
           {/* Redirection vers la page d'inscription */}
           <Link
             to="/register"
-            className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700"
+            className="inline-flex justify-center rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700"
           >
             Commencer
           </Link>
@@ -41,19 +41,19 @@ export default function HomePage() {
           {/* Redirection vers la page de connexion */}
           <Link
             to="/login"
-            className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700"
+            className="inline-flex justify-center rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700"
           >
             Se connecter
           </Link>
         </div>
 
         {/* Carte présentant les principales fonctionnalités */}
-        <div className="w-full rounded-2xl border bg-slate-200 p-3 text-center shadow-sm">
+        <div className="w-full rounded-2xl border bg-slate-200 p-4 text-center shadow-sm sm:p-6">
           {/* Titre de la section fonctionnalités */}
-          <h2 className="text-3xl font-semibold">Fonctionnalités</h2>
+          <h2 className="text-2xl font-semibold sm:text-3xl">Fonctionnalités</h2>
 
           {/* Liste des fonctionnalités proposées */}
-          <ul className="mt-2 space-y-1 text-slate-600">
+          <ul className="mt-4 grid gap-2 text-slate-600 sm:grid-cols-2 lg:grid-cols-5">
             {/* Recherche d'utilisateurs selon leurs compétences */}
             <li>Recherche par compétence</li>
 

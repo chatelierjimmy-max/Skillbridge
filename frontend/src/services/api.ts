@@ -2,6 +2,12 @@
 // Axios est utilisé pour effectuer des requêtes HTTP vers le backend.
 import axios from "axios";
 
+const apiBaseUrl = import.meta.env.VITE_API_URL;
+
+if (import.meta.env.PROD && !apiBaseUrl) {
+  throw new Error("Missing VITE_API_URL environment variable");
+}
+
 /**
  * Création d'une instance Axios personnalisée.
  *
@@ -22,7 +28,7 @@ export const api = axios.create({
    * ou en développement :
    * http://localhost:5000/api
    */
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+  baseURL: apiBaseUrl || "http://localhost:5000/api",
 });
 
 /**

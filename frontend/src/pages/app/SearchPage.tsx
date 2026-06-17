@@ -112,7 +112,7 @@ export default function SearchPage() {
     <div>
       {/* En-tête de la page */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Rechercher des apprenants</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">Rechercher des apprenants</h1>
 
         <p className="mt-2 text-slate-600">
           Trouve des partenaires selon leurs compétences, leur niveau et leur
@@ -121,10 +121,10 @@ export default function SearchPage() {
       </div>
 
       {/* Bloc contenant le formulaire de recherche */}
-      <section className="rounded-2xl border bg-white p-6 shadow-sm">
+      <section className="rounded-2xl border bg-white p-4 shadow-sm sm:p-6">
         <form
           onSubmit={handleSearch}
-          className="grid gap-4 md:grid-cols-[1fr_1fr_1fr_auto]"
+          className="grid gap-4 md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_auto]"
         >
           {/* Filtre par compétence */}
           <div>
@@ -189,10 +189,10 @@ export default function SearchPage() {
           </div>
 
           {/* Bouton de recherche */}
-          <div className="flex items-end gap-2">
+          <div className="flex items-end gap-2 md:col-span-2 xl:col-span-1">
             <button
               type="submit"
-              className="flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700 xl:w-auto"
             >
               <Search className="h-4 w-4" />
               Rechercher
@@ -204,7 +204,7 @@ export default function SearchPage() {
         <button
           type="button"
           onClick={resetFilters}
-          className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700"
+          className="mt-4 w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700 sm:w-auto"
         >
           Réinitialiser les filtres
         </button>
@@ -217,7 +217,7 @@ export default function SearchPage() {
 
         {/* Aucun résultat après une recherche */}
         {!loading && searched && results.length === 0 && (
-          <div className="rounded-2xl border bg-white p-8 text-center shadow-sm">
+          <div className="rounded-2xl border bg-white p-6 text-center shadow-sm sm:p-8">
             <p className="font-medium">Aucun apprenant trouvé.</p>
 
             <p className="mt-2 text-sm text-slate-600">
@@ -232,10 +232,10 @@ export default function SearchPage() {
             {results.map((learner) => (
               <article
                 key={learner.id}
-                className="rounded-2xl border bg-white p-6 shadow-sm"
+                className="rounded-2xl border bg-white p-4 shadow-sm sm:p-6"
               >
                 {/* En-tête de la carte apprenant */}
-                <div className="flex items-start gap-4">
+                <div className="flex items-start gap-3 sm:gap-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-700">
                     <UserRound className="h-6 w-6" />
                   </div>

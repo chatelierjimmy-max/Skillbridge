@@ -215,7 +215,7 @@ export default function GroupMessagesPage() {
 
       {/* En-tête de la messagerie */}
       <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold">
+        <h1 className="text-2xl font-bold sm:text-3xl">
           SkillBridge - Messagerie collaborative
         </h1>
 
@@ -241,14 +241,14 @@ export default function GroupMessagesPage() {
       {/* Layout principal : colonne membres + zone de messages */}
       <div className="grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
         {/* Liste latérale des membres */}
-        <aside className="rounded-2xl border bg-white p-5 shadow-sm">
+        <aside className="rounded-2xl border bg-white p-4 shadow-sm sm:p-5">
           <div className="flex items-center gap-2">
             <Users className="h-5 w-5 text-blue-600" />
 
             <h2 className="font-semibold">Membres du groupe</h2>
           </div>
 
-          <ul className="mt-5 space-y-3 text-sm">
+          <ul className="mt-5 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-1">
             {group.members.map((member) => (
               <li key={member.id} className="flex items-center gap-2">
                 {/* Petit point bleu représentant un membre */}
@@ -265,9 +265,9 @@ export default function GroupMessagesPage() {
         </aside>
 
         {/* Bloc principal de messagerie */}
-        <section className="flex h-[650px] flex-col rounded-2xl border bg-white shadow-sm">
+        <section className="flex h-[calc(100vh-17rem)] min-h-[520px] flex-col rounded-2xl border bg-white shadow-sm sm:h-[650px]">
           {/* En-tête de la conversation */}
-          <div className="border-b px-6 py-4 text-center">
+          <div className="border-b px-4 py-4 text-center sm:px-6">
             <h2 className="text-lg font-semibold">{group.name}</h2>
 
             <p className="text-sm text-slate-500">
@@ -276,7 +276,7 @@ export default function GroupMessagesPage() {
           </div>
 
           {/* Zone scrollable des messages */}
-          <div className="flex-1 space-y-4 overflow-y-auto p-6">
+          <div className="flex-1 space-y-4 overflow-y-auto p-4 sm:p-6">
             {messages.length === 0 ? (
               // Affichage lorsqu'aucun message n'a encore été envoyé
               <div className="flex h-full items-center justify-center text-center text-slate-500">
@@ -292,12 +292,12 @@ export default function GroupMessagesPage() {
                 return (
                   <div
                     key={message.id}
-                    className={`rounded-lg border p-4 ${
+                    className={`rounded-lg border p-3 sm:p-4 ${
                       isMine ? "border-blue-200 bg-blue-50" : "bg-white"
                     }`}
                   >
-                    <div className="flex items-start justify-between gap-4">
-                      <p className="text-sm">
+                    <div className="flex items-start justify-between gap-3 sm:gap-4">
+                      <p className="min-w-0 break-words text-sm">
                         <strong>
                           {isMine
                             ? "Moi"
@@ -339,7 +339,7 @@ export default function GroupMessagesPage() {
           </div>
 
           {/* Formulaire d'envoi de message */}
-          <form onSubmit={handleSendMessage} className="border-t p-4">
+          <form onSubmit={handleSendMessage} className="border-t p-3 sm:p-4">
             <div className="flex flex-col gap-3 sm:flex-row">
               <input
                 type="text"
@@ -347,7 +347,7 @@ export default function GroupMessagesPage() {
                 onChange={(e) => setContent(e.target.value)}
                 maxLength={1000}
                 placeholder="Écrire un message..."
-                className="min-h-12 flex-1 rounded-lg border px-4 py-3"
+                className="min-h-12 min-w-0 flex-1 rounded-lg border px-4 py-3"
               />
 
               <button

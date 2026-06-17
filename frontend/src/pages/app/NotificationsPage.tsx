@@ -79,7 +79,7 @@ export default function NotificationsPage() {
     <div>
       {/* En-tête de la page */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Notifications</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">Notifications</h1>
 
         <p className="mt-2 text-slate-600">
           {unreadCount} notification(s) non lue(s).
@@ -88,7 +88,7 @@ export default function NotificationsPage() {
 
       {/* Cas où aucune notification n'existe */}
       {notifications.length === 0 ? (
-        <div className="rounded-2xl border bg-white p-8 text-center shadow-sm">
+        <div className="rounded-2xl border bg-white p-6 text-center shadow-sm sm:p-8">
           {/* Icône décorative */}
           <Bell className="mx-auto mb-3 h-8 w-8 text-slate-400" />
 
@@ -100,7 +100,7 @@ export default function NotificationsPage() {
           {notifications.map((notification) => (
             <article
               key={notification._id}
-              className={`rounded-2xl border bg-white p-5 shadow-sm ${
+              className={`rounded-2xl border bg-white p-4 shadow-sm sm:p-5 ${
                 // Bordure bleue pour les notifications non lues
                 !notification.isRead ? "border-blue-300" : ""
               }`}
@@ -108,7 +108,7 @@ export default function NotificationsPage() {
               <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
                 {/* Contenu principal */}
                 <div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     {/* Icône de notification */}
                     <Bell
                       className={`h-5 w-5 ${
@@ -143,7 +143,7 @@ export default function NotificationsPage() {
                 {!notification.isRead && (
                   <button
                     onClick={() => handleRead(notification._id)}
-                    className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700"
+                    className="flex flex-wrap items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700"
                   >
                     <CheckCircle2 className="h-4 w-4" />
                     Marquer comme lue

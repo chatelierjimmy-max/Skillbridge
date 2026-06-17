@@ -20,25 +20,25 @@ export default function PublicLayout() {
             - gauche : logo
             - centre : slogan
             - droite : boutons connexion/inscription */}
-        <nav className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-4 py-4">
+        <nav className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           {/* Logo du site redirigeant vers la page d'accueil */}
-          <Link to="/" className="text-4xl font-bold text-blue-600">
+          <Link to="/" className="text-3xl font-bold text-blue-600 sm:text-4xl">
             SkillBridge
           </Link>
 
           {/* Slogan du site */}
           {/* Caché sur mobile grâce à hidden */}
           {/* Visible à partir des écrans md */}
-          <p className="hidden text-xl font-bold text-blue-600 md:block">
+          <p className="hidden text-xl font-bold text-blue-600 lg:block">
             Apprentissage collaboratif
           </p>
 
           {/* Conteneur des boutons d'authentification */}
-          <div className="flex justify-self-end gap-3">
+          <div className="grid grid-cols-2 gap-3 sm:flex sm:justify-self-end">
             {/* Bouton de connexion */}
             <Link
               to="/login"
-              className="inline-flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700"
+              className="inline-flex h-10 items-center justify-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700"
             >
               Se connecter
             </Link>
@@ -46,7 +46,7 @@ export default function PublicLayout() {
             {/* Bouton d'inscription */}
             <Link
               to="/register"
-              className="inline-flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700"
+              className="inline-flex h-10 items-center justify-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700"
             >
               Inscription
             </Link>
@@ -67,7 +67,7 @@ export default function PublicLayout() {
         {/* Conteneur principal du footer */}
         {/* Une colonne sur mobile */}
         {/* Trois colonnes sur écrans moyens et plus */}
-        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-4 px-4 py-6 text-center md:grid-cols-[1fr_auto_1fr]">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-4 px-4 py-6 text-center sm:px-6 md:grid-cols-[1fr_auto_1fr] lg:px-8">
           {/* Copyright */}
           <p className="text-xs text-slate-400 md:justify-self-start">
             © 2026 SkillBridge
