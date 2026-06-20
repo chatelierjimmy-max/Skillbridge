@@ -9,7 +9,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 // Importation des icônes utilisées dans les cartes de sessions
-import { Calendar, Clock, Users } from "lucide-react";
+import { Calendar, Clock, Users, Video } from "lucide-react";
 
 // Service responsable des appels API liés aux sessions
 import { sessionService } from "../../services/session.service";
@@ -342,9 +342,19 @@ export default function GroupSessionsPage() {
 
                 {/* État d'inscription */}
                 {session.isRegistered ? (
-                  <span className="mt-5 inline-block rounded-lg bg-green-100 px-4 py-2 text-sm font-medium text-green-700">
-                    Inscrit
-                  </span>
+                  <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                    <span className="inline-flex items-center justify-center rounded-lg bg-green-100 px-4 py-2 text-sm font-medium text-green-700">
+                      Inscrit
+                    </span>
+
+                    <Link
+                      to={`/sessions/${session.id}/video`}
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700 sm:w-auto"
+                    >
+                      <Video className="h-4 w-4" />
+                      Rejoindre la visio
+                    </Link>
+                  </div>
                 ) : (
                   <button
                     onClick={() => handleBook(session.id)}

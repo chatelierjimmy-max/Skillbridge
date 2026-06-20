@@ -9,7 +9,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 // Importation des icônes utilisées dans la page
-import { Calendar, MessageCircle, Users } from "lucide-react";
+import { Calendar, MessageCircle, Users, Video } from "lucide-react";
 
 // Service responsable des appels API liés aux groupes
 import { groupService } from "../../services/group.service";
@@ -288,6 +288,14 @@ export default function GroupDetailPage() {
             >
               <MessageCircle className="h-4 w-4" />
               Messagerie
+            </Link>
+
+            <Link
+              to={`/groups/${group.id}/video`}
+              className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700"
+            >
+              <Video className="h-4 w-4" />
+              Visioconference
             </Link>
           </div>
         </aside>

@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 
 // Importation des icônes utilisées dans l'affichage des sessions
-import { Calendar, Clock } from "lucide-react";
+import { Calendar, Clock, Video } from "lucide-react";
 
 // Link permet de naviguer vers une autre page sans rechargement
 import { Link } from "react-router-dom";
@@ -169,13 +169,22 @@ export default function SessionsPage() {
                 </p>
               </div>
 
-              {/* Bouton permettant d'annuler l'inscription */}
-              <button
-                onClick={() => handleCancel(session.id)}
-                className="mt-5 w-full rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-red-700 sm:w-auto"
-              >
-                Annuler ma participation
-              </button>
+              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  to={`/sessions/${session.id}/video`}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700 sm:w-auto"
+                >
+                  <Video className="h-4 w-4" />
+                  Rejoindre la visio
+                </Link>
+
+                <button
+                  onClick={() => handleCancel(session.id)}
+                  className="w-full rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-red-700 sm:w-auto"
+                >
+                  Annuler ma participation
+                </button>
+              </div>
             </article>
           ))}
         </div>

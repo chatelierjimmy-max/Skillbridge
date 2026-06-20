@@ -27,6 +27,7 @@ import GroupsPage from "../pages/app/GroupsPage";
 import GroupDetailPage from "../pages/app/GroupDetailPage";
 import GroupSessionsPage from "../pages/app/GroupSessionsPage";
 import GroupMessagesPage from "../pages/app/GroupMessagesPage";
+import VideoRoom from "../pages/app/VideoRoom";
 import SessionsPage from "../pages/app/SessionsPage";
 import NotificationsPage from "../pages/app/NotificationsPage";
 
@@ -153,6 +154,10 @@ export const router = createBrowserRouter([
            * Sessions auxquelles l'utilisateur participe
            */
           {
+            path: "/groups/:id/video",
+            element: <VideoRoom />,
+          },
+          {
             path: "/sessions",
             element: <SessionsPage />,
           },
@@ -160,6 +165,10 @@ export const router = createBrowserRouter([
           /**
            * Notifications utilisateur
            */
+          {
+            path: "/sessions/:sessionId/video",
+            element: <VideoRoom />,
+          },
           {
             path: "/notifications",
             element: <NotificationsPage />,

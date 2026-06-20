@@ -1,3 +1,6 @@
+import http from "http";
+import { Server } from "socket.io";
+
 // Import de l'application Express configurée.
 //
 // Ce fichier contient :
@@ -42,23 +45,60 @@ const startServer = async (): Promise<void> => {
    * Si la connexion échoue :
    * - une exception est levée
    * - le serveur ne démarre pas
-   */
+  */
   await connectMongoDB();
 
-  /**
-   * ====================================
-   * Démarrage du serveur HTTP
-   * ====================================
-   *
-   * L'application Express commence à écouter
-   * les requêtes entrantes sur le port défini
-   * dans les variables d'environnement.
-   */
-  app.listen(Number(env.port), () => {
-    /**
-     * Message affiché dans la console
-     * lorsque le serveur est opérationnel.
-     */
+  const httpServer = http.createServer(app);
+
+  const io = new Server(httpServer, {
+    cors: {
+      origin: env.frontendUrl,
+      methods: ["GET", "POST"],
+      credentials: true,
+    },
+  });
+
+  io.on("connection", (socket) => {
+    console.log("User connected:", socket.id);
+
+    socket.on("join-room", ({ roomId, userId }) => {
+      socket.join(roomId);
+
+      socket.to(roomId).emit("user-joined", {
+        userId,
+        socketId: socket.id,
+      });
+
+      socket.on("offer", (payload) => {
+        socket.to(payload.target).emit("offer", {
+          ...payload,
+          socketId: socket.id,
+        });
+      });
+
+      socket.on("answer", (payload) => {
+        socket.to(payload.target).emit("answer", {
+          ...payload,
+          socketId: socket.id,
+        });
+      });
+
+      socket.on("ice-candidate", (payload) => {
+        socket.to(payload.target).emit("ice-candidate", {
+          ...payload,
+          socketId: socket.id,
+        });
+      });
+
+      socket.on("disconnect", () => {
+        socket.to(roomId).emit("user-left", {
+          socketId: socket.id,
+        });
+      });
+    });
+  });
+
+  httpServer.listen(Number(env.port), "0.0.0.0", () => {
     console.log(`Server running on port ${env.port}`);
   });
 };
