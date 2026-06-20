@@ -12,7 +12,12 @@ import { validate } from "../middlewares/validate.middleware";
 
 // Schémas de validation utilisés pour l'inscription
 // et la connexion.
-import { registerSchema, loginSchema } from "../schemas/auth.schema";
+import {
+  registerSchema,
+  loginSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+} from "../schemas/auth.schema";
 
 // Middleware d'authentification.
 // Vérifie la présence et la validité du token JWT.
@@ -111,6 +116,20 @@ router.post(
    * Contrôleur de connexion.
    */
   authController.login,
+);
+
+router.post(
+  "/forgot-password",
+  authRateLimiter,
+  validate(forgotPasswordSchema),
+  authController.forgotPassword,
+);
+
+router.post(
+  "/reset-password",
+  authRateLimiter,
+  validate(resetPasswordSchema),
+  authController.resetPassword,
 );
 
 /**

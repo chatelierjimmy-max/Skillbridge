@@ -126,9 +126,16 @@ export default function LoginPage() {
 
           {/* Champ mot de passe */}
           <div>
-            <label className="mb-1 block text-sm font-medium">
-              Mot de passe
-            </label>
+            <div className="mb-1 flex items-center justify-between gap-3">
+              <label className="block text-sm font-medium">Mot de passe</label>
+
+              <Link
+                to="/forgot-password"
+                className="text-sm font-medium text-blue-600"
+              >
+                Mot de passe oublié ?
+              </Link>
+            </div>
 
             <input
               type="password"

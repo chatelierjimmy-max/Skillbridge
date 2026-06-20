@@ -78,6 +78,28 @@ export const loginSchema = z.object({
   password: z.string().min(1, "Mot de passe obligatoire"),
 });
 
+export const forgotPasswordSchema = z.object({
+  email: z.string().email("Email invalide"),
+});
+
+export const resetPasswordSchema = z
+  .object({
+    token: z.string().min(1, "Lien de réinitialisation invalide"),
+
+    password: z
+      .string()
+      .min(8, "Minimum 8 caractères")
+      .regex(/[A-Z]/, "Une majuscule requise")
+      .regex(/[a-z]/, "Une minuscule requise")
+      .regex(/[0-9]/, "Un chiffre requis"),
+
+    confirmPassword: z.string().min(1, "Confirmation obligatoire"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Les mots de passe ne correspondent pas",
+    path: ["confirmPassword"],
+  });
+
 /**
  * Génération automatique du type TypeScript
  * à partir du schéma d'inscription.
@@ -105,3 +127,7 @@ export type RegisterFormData = z.infer<typeof registerSchema>;
  * }
  */
 export type LoginFormData = z.infer<typeof loginSchema>;
+
+export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
+
+export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;

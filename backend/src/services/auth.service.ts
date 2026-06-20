@@ -2,6 +2,7 @@
 // Cette bibliothèque permet de hasher les mots de passe
 // et de comparer un mot de passe en clair avec un hash stocké.
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 
 // Import de l'enum UserStatus générée par Prisma.
 // Elle permet de vérifier l'état du compte utilisateur.
@@ -17,6 +18,8 @@ import { AppError } from "../utils/AppError";
 
 // Fonction utilitaire permettant de générer un JWT.
 import { generateToken } from "../utils/jwt";
+
+import { env } from "../config/env";
 
 // Service de logs.
 // Utilisé pour tracer les actions utilisateur
@@ -41,6 +44,15 @@ interface LoginInput {
   password: string;
 }
 
+interface ForgotPasswordInput {
+  email: string;
+}
+
+interface ResetPasswordInput {
+  token: string;
+  password: string;
+}
+
 /**
  * Contexte de la requête HTTP.
  *
@@ -51,6 +63,9 @@ interface RequestContext {
   ipAddress?: string | undefined;
   userAgent?: string | undefined;
 }
+
+const hashResetToken = (token: string) =>
+  crypto.createHash("sha256").update(token).digest("hex");
 
 /**
  * Service d'authentification.
@@ -205,6 +220,90 @@ export const authService = {
         role: user.role,
       },
       accessToken,
+    };
+  },
+
+  async forgotPassword(data: ForgotPasswordInput, context?: RequestContext) {
+    const genericMessage =
+      "Si un compte existe avec cet email, un lien de réinitialisation a été généré.";
+    const normalizedEmail = data.email.toLowerCase();
+    const user = await userRepository.findByEmail(normalizedEmail);
+
+    if (!user || user.status === UserStatus.DISABLED) {
+      await logService.security(
+        "PASSWORD_RESET_REQUEST",
+        {
+          email: normalizedEmail,
+          ipAddress: context?.ipAddress,
+          userAgent: context?.userAgent,
+        },
+        user ? "DISABLED_ACCOUNT" : "USER_NOT_FOUND",
+      );
+
+      return { message: genericMessage };
+    }
+
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const passwordResetToken = hashResetToken(resetToken);
+    const passwordResetExpires = new Date(Date.now() + 60 * 60 * 1000);
+
+    await userRepository.setPasswordResetToken(
+      user.id,
+      passwordResetToken,
+      passwordResetExpires,
+    );
+
+    await logService.security("PASSWORD_RESET_REQUEST", {
+      userId: user.id,
+      email: user.email,
+      ipAddress: context?.ipAddress,
+      userAgent: context?.userAgent,
+    });
+
+    const resetLink = `${env.frontendUrl}/reset-password?token=${resetToken}`;
+
+    if (env.nodeEnv !== "production") {
+      return {
+        message: genericMessage,
+        resetLink,
+      };
+    }
+
+    return { message: genericMessage };
+  },
+
+  async resetPassword(data: ResetPasswordInput, context?: RequestContext) {
+    const passwordResetToken = hashResetToken(data.token);
+    const user =
+      await userRepository.findByPasswordResetToken(passwordResetToken);
+
+    if (!user) {
+      await logService.security(
+        "PASSWORD_RESET_FAILED",
+        {
+          ipAddress: context?.ipAddress,
+          userAgent: context?.userAgent,
+        },
+        "INVALID_OR_EXPIRED_TOKEN",
+      );
+
+      throw new AppError("Lien de réinitialisation invalide ou expiré", 400);
+    }
+
+    const saltRounds = Number(process.env.BCRYPT_SALT_ROUNDS || 12);
+    const hashedPassword = await bcrypt.hash(data.password, saltRounds);
+
+    await userRepository.updatePassword(user.id, hashedPassword);
+
+    await logService.security("PASSWORD_RESET_SUCCESS", {
+      userId: user.id,
+      email: user.email,
+      ipAddress: context?.ipAddress,
+      userAgent: context?.userAgent,
+    });
+
+    return {
+      message: "Mot de passe modifié avec succès",
     };
   },
 

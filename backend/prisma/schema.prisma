@@ -38,6 +38,8 @@ model User {
   lastname         String        @db.VarChar(100)
   email            String        @unique @db.VarChar(255)
   password         String        @db.VarChar(255)
+  passwordResetToken   String?   @db.VarChar(255)
+  passwordResetExpires DateTime?
   role             UserRole      @default(USER)
   status           UserStatus    @default(ACTIVE)
   profile          Profile?
@@ -49,6 +51,7 @@ model User {
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
 
+  @@index([passwordResetToken])
   @@map("users")
 }
 

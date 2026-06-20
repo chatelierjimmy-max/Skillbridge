@@ -5,7 +5,10 @@ export type SecurityEvent =
   | "LOGIN_FAILED"
   | "ACCESS_DENIED"
   | "TOKEN_INVALID"
-  | "ACCOUNT_DISABLED";
+  | "ACCOUNT_DISABLED"
+  | "PASSWORD_RESET_REQUEST"
+  | "PASSWORD_RESET_SUCCESS"
+  | "PASSWORD_RESET_FAILED";
 
 export interface ISecurityLog extends Document {
   userId?: number;
@@ -30,6 +33,9 @@ const securityLogSchema = new Schema<ISecurityLog>(
         "ACCESS_DENIED",
         "TOKEN_INVALID",
         "ACCOUNT_DISABLED",
+        "PASSWORD_RESET_REQUEST",
+        "PASSWORD_RESET_SUCCESS",
+        "PASSWORD_RESET_FAILED",
       ],
     },
     reason: { type: String, maxlength: 255 },

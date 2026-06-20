@@ -18,6 +18,8 @@ import AdminRoute from "./AdminRoute";
 import HomePage from "../pages/public/HomePage";
 import LoginPage from "../pages/auth/LoginPage";
 import RegisterPage from "../pages/auth/RegisterPage";
+import ForgotPasswordPage from "../pages/auth/ForgotPasswordPage";
+import ResetPasswordPage from "../pages/auth/ResetPasswordPage";
 
 // Pages accessibles aux utilisateurs connectés
 import DashboardPage from "../pages/app/DashboardPage";
@@ -63,6 +65,14 @@ export const router = createBrowserRouter([
         // Inscription utilisateur
         path: "/register",
         element: <RegisterPage />,
+      },
+      {
+        path: "/forgot-password",
+        element: <ForgotPasswordPage />,
+      },
+      {
+        path: "/reset-password",
+        element: <ResetPasswordPage />,
       },
     ],
   },

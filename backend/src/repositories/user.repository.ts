@@ -95,6 +95,17 @@ export const userRepository = {
     });
   },
 
+  findByPasswordResetToken(passwordResetToken: string) {
+    return prisma.user.findFirst({
+      where: {
+        passwordResetToken,
+        passwordResetExpires: {
+          gt: new Date(),
+        },
+      },
+    });
+  },
+
   /**
    * Crée un nouvel utilisateur.
    *
@@ -152,6 +163,35 @@ export const userRepository = {
         email: true,
         role: true,
         status: true,
+      },
+    });
+  },
+
+  setPasswordResetToken(
+    userId: number,
+    passwordResetToken: string,
+    passwordResetExpires: Date,
+  ) {
+    return prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        passwordResetToken,
+        passwordResetExpires,
+      },
+    });
+  },
+
+  updatePassword(userId: number, password: string) {
+    return prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        password,
+        passwordResetToken: null,
+        passwordResetExpires: null,
       },
     });
   },

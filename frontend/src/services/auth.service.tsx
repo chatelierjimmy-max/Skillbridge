@@ -20,6 +20,15 @@ interface LoginResponse {
   accessToken: string;
 }
 
+interface ForgotPasswordResponse {
+  message: string;
+  resetLink?: string;
+}
+
+interface ResetPasswordResponse {
+  message: string;
+}
+
 /**
  * Service d'authentification.
  *
@@ -71,6 +80,24 @@ export const authService = {
     // Retourne :
     // - les informations utilisateur
     // - le JWT
+    return response.data;
+  },
+
+  async forgotPassword(data: { email: string }) {
+    const response = await api.post<ForgotPasswordResponse>(
+      "/auth/forgot-password",
+      data,
+    );
+
+    return response.data;
+  },
+
+  async resetPassword(data: { token: string; password: string }) {
+    const response = await api.post<ResetPasswordResponse>(
+      "/auth/reset-password",
+      data,
+    );
+
     return response.data;
   },
 

@@ -138,6 +138,36 @@ export const authController = {
     }
   },
 
+  async forgotPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const context = {
+        ipAddress: req.ip,
+        userAgent: req.headers["user-agent"],
+      };
+
+      const result = await authService.forgotPassword(req.body, context);
+
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async resetPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const context = {
+        ipAddress: req.ip,
+        userAgent: req.headers["user-agent"],
+      };
+
+      const result = await authService.resetPassword(req.body, context);
+
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  },
+
   /**
    * ==========================================================
    * UTILISATEUR CONNECTÉ
