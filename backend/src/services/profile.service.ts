@@ -10,10 +10,6 @@ import { Level } from "@prisma/client";
 // des profils utilisateurs dans la base de données.
 import { profileRepository } from "../repositories/profile.repository";
 
-// Classe d'erreur personnalisée.
-// Permet de générer des erreurs HTTP métier.
-import { AppError } from "../utils/AppError";
-
 /**
  * Données pouvant être modifiées
  * sur le profil utilisateur.
@@ -45,9 +41,8 @@ export const profileService = {
     // Recherche du profil associé à l'utilisateur.
     const profile = await profileRepository.findByUserId(userId);
 
-    // Aucun profil trouvé.
     if (!profile) {
-      throw new AppError("Profil introuvable", 404);
+      return profileRepository.update(userId, {});
     }
 
     return profile;
