@@ -31,6 +31,7 @@ export default function SearchPage() {
 
   // Filtres actuellement sélectionnés
   const [filters, setFilters] = useState<SearchFilters>({
+    q: "",
     skill: "",
     level: "",
     city: "",
@@ -93,6 +94,7 @@ export default function SearchPage() {
    */
   const resetFilters = async () => {
     const emptyFilters: SearchFilters = {
+      q: "",
       skill: "",
       level: "",
       city: "",
@@ -124,8 +126,26 @@ export default function SearchPage() {
       <section className="rounded-2xl border bg-white p-4 shadow-sm sm:p-6">
         <form
           onSubmit={handleSearch}
-          className="grid gap-4 md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_auto]"
+          className="grid gap-4 md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_1fr_auto]"
         >
+          <div>
+            <label className="mb-1 block text-sm font-medium">
+              Nom ou prénom
+            </label>
+
+            <input
+              value={filters.q}
+              onChange={(e) =>
+                setFilters({
+                  ...filters,
+                  q: e.target.value,
+                })
+              }
+              placeholder="Nathan..."
+              className="w-full rounded-lg border px-4 py-3"
+            />
+          </div>
+
           {/* Filtre par compétence */}
           <div>
             <label className="mb-1 block text-sm font-medium">Compétence</label>

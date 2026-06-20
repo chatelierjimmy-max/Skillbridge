@@ -23,6 +23,11 @@ export interface SearchLearnersInput {
   userId: number;
 
   /**
+   * Texte libre recherché dans le prénom, le nom ou l'email.
+   */
+  q?: string;
+
+  /**
    * Nom de compétence recherché.
    *
    * Exemple :

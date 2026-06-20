@@ -19,6 +19,9 @@ interface SearchLearnersFilters {
   // Il permet d'exclure l'utilisateur courant des résultats.
   userId: number;
 
+  // Texte libre recherché dans le prénom, le nom ou l'email.
+  q?: string;
+
   // Nom ou partie du nom d'une compétence recherchée
   skill?: string;
 
@@ -122,6 +125,26 @@ export const searchRepository = {
       },
       status: UserStatus.ACTIVE,
     };
+
+    if (filters.q) {
+      where.OR = [
+        {
+          firstname: {
+            contains: filters.q,
+          },
+        },
+        {
+          lastname: {
+            contains: filters.q,
+          },
+        },
+        {
+          email: {
+            contains: filters.q,
+          },
+        },
+      ];
+    }
 
     /**
      * Filtres appliqués sur le profil utilisateur.

@@ -33,6 +33,8 @@ export const searchService = {
     // Envoi d'une requête GET avec paramètres d'URL.
     const response = await api.get<LearnerResult[]>("/users/search", {
       params: {
+        q: filters.q || undefined,
+
         /**
          * Si aucun filtre n'est renseigné,
          * undefined évite d'envoyer un paramètre vide.

@@ -100,6 +100,10 @@ export const searchController = {
         userId: req.user.id,
       };
 
+      if (typeof req.query.q === "string") {
+        filters.q = req.query.q;
+      }
+
       /**
        * ======================================================
        * FILTRE PAR COMPÉTENCE

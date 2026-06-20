@@ -92,6 +92,15 @@ export interface LearnerResult {
  */
 export interface SearchFilters {
   /**
+   * Texte libre pour rechercher un utilisateur.
+   *
+   * Exemple :
+   * Nathan
+   * Durand
+   */
+  q?: string;
+
+  /**
    * Nom de la compétence recherchée.
    *
    * Exemple :

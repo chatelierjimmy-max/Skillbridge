@@ -27,6 +27,8 @@ export const searchLearnersSchema = z.object({
    * GET /users/search?skill=React&city=Lyon&page=1
    */
   query: z.object({
+    q: z.string().max(150).optional(),
+
     /**
      * Nom de la compétence recherchée.
      *
