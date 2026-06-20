@@ -31,6 +31,8 @@ import { errorMiddleware } from "./middlewares/error.middleware";
 /**
  * Instance principale de l'application Express.
  */
+export const app = express();
+
 app.set("trust proxy", 1);
 
 /**

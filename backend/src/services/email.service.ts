@@ -1,16 +1,24 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const getSender = () =>
   process.env.RESEND_FROM_EMAIL ||
   process.env.EMAIL_FROM ||
   "SkillBridge <onboarding@resend.dev>";
 
+const getResendClient = () => {
+  if (!process.env.RESEND_API_KEY) {
+    console.warn("RESEND_API_KEY is missing");
+    return null;
+  }
+
+  return new Resend(process.env.RESEND_API_KEY);
+};
+
 export const emailService = {
   async sendWelcomeEmail(to: string, firstname: string) {
-    if (!process.env.RESEND_API_KEY) {
-      console.warn("RESEND_API_KEY is missing");
+    const resend = getResendClient();
+
+    if (!resend) {
       return;
     }
 
@@ -27,8 +35,9 @@ export const emailService = {
   },
 
   async sendPasswordResetEmail(to: string, resetLink: string) {
-    if (!process.env.RESEND_API_KEY) {
-      console.warn("RESEND_API_KEY is missing");
+    const resend = getResendClient();
+
+    if (!resend) {
       return;
     }
 
