@@ -25,6 +25,7 @@ import { env } from "../config/env";
 // Utilisé pour tracer les actions utilisateur
 // et les événements de sécurité.
 import { logService } from "./log.service";
+import { emailService } from "./email.service";
 
 /**
  * Données nécessaires à l'inscription.
@@ -95,12 +96,9 @@ export const authService = {
     }
 
     // Définit le coût de hashage bcrypt.
-    // Si la variable d'environnement n'existe pas,
-    // la valeur 12 est utilisée par défaut.
     const saltRounds = Number(process.env.BCRYPT_SALT_ROUNDS || 12);
 
     // Hashage du mot de passe avant stockage.
-    // Le mot de passe en clair ne doit jamais être sauvegardé.
     const hashedPassword = await bcrypt.hash(data.password, saltRounds);
 
     // Création de l'utilisateur avec email normalisé en minuscules.
@@ -117,6 +115,13 @@ export const authService = {
       ipAddress: context?.ipAddress,
       userAgent: context?.userAgent,
     });
+
+    // Envoi de l'email de bienvenue
+    try {
+      await emailService.sendWelcomeEmail(user.email, user.firstname);
+    } catch (error) {
+      console.error("Welcome email error:", error);
+    }
 
     return user;
   },
@@ -261,6 +266,12 @@ export const authService = {
     });
 
     const resetLink = `${env.frontendUrl}/reset-password?token=${resetToken}`;
+
+    try {
+      await emailService.sendPasswordResetEmail(user.email, resetLink);
+    } catch (error) {
+      console.error("Password reset email error:", error);
+    }
 
     if (env.nodeEnv !== "production") {
       return {
