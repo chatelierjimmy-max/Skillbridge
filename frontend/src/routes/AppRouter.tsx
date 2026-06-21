@@ -1,227 +1,131 @@
-// Fonction principale de React Router permettant de créer
-// l'arborescence complète des routes de l'application
+import { Suspense, type ReactElement } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
-// Layout public utilisé pour les visiteurs non connectés
-import PublicLayout from "../components/layout/PublicLayout";
-
-// Layout principal utilisé après connexion
 import AppLayout from "../components/layout/AppLayout";
-
-// Route protégée nécessitant une authentification
+import PublicLayout from "../components/layout/PublicLayout";
+import AdminRoute from "./AdminRoute";
+import {
+  AdminLogsPage,
+  AdminUsersPage,
+  DashboardPage,
+  ForgotPasswordPage,
+  GroupDetailPage,
+  GroupMessagesPage,
+  GroupsPage,
+  GroupSessionsPage,
+  HomePage,
+  LoginPage,
+  NotificationsPage,
+  ProfilePage,
+  RegisterPage,
+  ResetPasswordPage,
+  SearchPage,
+  SessionsPage,
+  VideoRoom,
+} from "./lazyPages";
 import PrivateRoute from "./PrivateRoute";
 
-// Route protégée réservée aux administrateurs
-import AdminRoute from "./AdminRoute";
+const routeFallback = (
+  <div className="min-h-40 p-6 text-sm text-slate-600">Chargement...</div>
+);
 
-// Pages publiques
-import HomePage from "../pages/public/HomePage";
-import LoginPage from "../pages/auth/LoginPage";
-import RegisterPage from "../pages/auth/RegisterPage";
-import ForgotPasswordPage from "../pages/auth/ForgotPasswordPage";
-import ResetPasswordPage from "../pages/auth/ResetPasswordPage";
+function lazyRoute(element: ReactElement) {
+  return <Suspense fallback={routeFallback}>{element}</Suspense>;
+}
 
-// Pages accessibles aux utilisateurs connectés
-import DashboardPage from "../pages/app/DashboardPage";
-import ProfilePage from "../pages/app/ProfilePage";
-import SearchPage from "../pages/app/SearchPage";
-import GroupsPage from "../pages/app/GroupsPage";
-import GroupDetailPage from "../pages/app/GroupDetailPage";
-import GroupSessionsPage from "../pages/app/GroupSessionsPage";
-import GroupMessagesPage from "../pages/app/GroupMessagesPage";
-import VideoRoom from "../pages/app/VideoRoom";
-import SessionsPage from "../pages/app/SessionsPage";
-import NotificationsPage from "../pages/app/NotificationsPage";
-
-// Pages d'administration
-import AdminUsersPage from "../pages/admin/AdminUsersPage";
-import AdminLogsPage from "../pages/admin/AdminLogsPage";
-
-// Création du routeur principal de l'application
 export const router = createBrowserRouter([
-  /**
-   * ==================================================
-   * ROUTES PUBLIQUES
-   * ==================================================
-   *
-   * Accessibles sans authentification.
-   * Utilisent le layout PublicLayout.
-   */
   {
     element: <PublicLayout />,
-
     children: [
       {
-        // Page d'accueil
         path: "/",
-        element: <HomePage />,
+        element: lazyRoute(<HomePage />),
       },
       {
-        // Connexion utilisateur
         path: "/login",
-        element: <LoginPage />,
+        element: lazyRoute(<LoginPage />),
       },
       {
-        // Inscription utilisateur
         path: "/register",
-        element: <RegisterPage />,
+        element: lazyRoute(<RegisterPage />),
       },
       {
         path: "/forgot-password",
-        element: <ForgotPasswordPage />,
+        element: lazyRoute(<ForgotPasswordPage />),
       },
       {
         path: "/reset-password",
-        element: <ResetPasswordPage />,
+        element: lazyRoute(<ResetPasswordPage />),
       },
     ],
   },
-
-  /**
-   * ==================================================
-   * ROUTES PRIVÉES
-   * ==================================================
-   *
-   * Nécessitent que l'utilisateur soit connecté.
-   * PrivateRoute vérifie l'authentification.
-   */
   {
     element: <PrivateRoute />,
-
     children: [
       {
-        // Layout principal de l'application
         element: <AppLayout />,
-
         children: [
-          /**
-           * Tableau de bord utilisateur
-           */
           {
             path: "/dashboard",
-            element: <DashboardPage />,
+            element: lazyRoute(<DashboardPage />),
           },
-
-          /**
-           * Gestion du profil utilisateur
-           */
           {
             path: "/profile",
-            element: <ProfilePage />,
+            element: lazyRoute(<ProfilePage />),
           },
-
-          /**
-           * Recherche d'apprenants
-           */
           {
             path: "/search",
-            element: <SearchPage />,
+            element: lazyRoute(<SearchPage />),
           },
-
-          /**
-           * Liste des groupes
-           */
           {
             path: "/groups",
-            element: <GroupsPage />,
+            element: lazyRoute(<GroupsPage />),
           },
-
-          /**
-           * Détail d'un groupe
-           *
-           * :id représente un paramètre dynamique
-           * Exemple :
-           * /groups/5
-           */
           {
             path: "/groups/:id",
-            element: <GroupDetailPage />,
+            element: lazyRoute(<GroupDetailPage />),
           },
-
-          /**
-           * Sessions associées à un groupe
-           *
-           * Exemple :
-           * /groups/5/sessions
-           */
           {
             path: "/groups/:id/sessions",
-            element: <GroupSessionsPage />,
+            element: lazyRoute(<GroupSessionsPage />),
           },
-
-          /**
-           * Messagerie d'un groupe
-           *
-           * Exemple :
-           * /groups/5/messages
-           */
           {
             path: "/groups/:id/messages",
-            element: <GroupMessagesPage />,
+            element: lazyRoute(<GroupMessagesPage />),
           },
-
-          /**
-           * Sessions auxquelles l'utilisateur participe
-           */
           {
             path: "/groups/:id/video",
-            element: <VideoRoom />,
+            element: lazyRoute(<VideoRoom />),
           },
           {
             path: "/sessions",
-            element: <SessionsPage />,
+            element: lazyRoute(<SessionsPage />),
           },
-
-          /**
-           * Notifications utilisateur
-           */
           {
             path: "/sessions/:sessionId/video",
-            element: <VideoRoom />,
+            element: lazyRoute(<VideoRoom />),
           },
           {
             path: "/notifications",
-            element: <NotificationsPage />,
+            element: lazyRoute(<NotificationsPage />),
           },
         ],
       },
     ],
   },
-
-  /**
-   * ==================================================
-   * ROUTES ADMINISTRATEUR
-   * ==================================================
-   *
-   * Nécessitent :
-   * - un utilisateur connecté
-   * - un rôle ADMIN
-   *
-   * Vérification effectuée dans AdminRoute.
-   */
   {
     element: <AdminRoute />,
-
     children: [
       {
-        // Réutilisation du même layout applicatif
         element: <AppLayout />,
-
         children: [
-          /**
-           * Gestion des utilisateurs
-           */
           {
             path: "/admin/users",
-            element: <AdminUsersPage />,
+            element: lazyRoute(<AdminUsersPage />),
           },
-
-          /**
-           * Consultation des logs
-           */
           {
             path: "/admin/logs",
-            element: <AdminLogsPage />,
+            element: lazyRoute(<AdminLogsPage />),
           },
         ],
       },
