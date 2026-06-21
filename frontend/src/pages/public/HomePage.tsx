@@ -5,33 +5,36 @@ import { Link } from "react-router-dom";
 const testimonialCards = [
   {
     username: "Jimmy",
+    rating: 4,
     comment:
       "J'ai trouvé un partenaire React rapidement et les sessions m'ont aidé à progresser rapidement.",
   },
   {
     username: "Nathan",
+    rating: 5,
     comment:
       "Les groupes sont simples a rejoindre et les échanges restent bien organisés, la messagerie instantanée et la visio sont un plus.",
   },
   {
-    username: "Sarah",
+    username: "Laëtitia",
+    rating: 4,
     comment:
       "J'aime pouvoir suivre mes compétences et retrouver mes sessions au même endroit.",
   },
 ];
 
-function RatingStars() {
+function RatingStars({ rating }: { rating: number }) {
   return (
     <div
       className="mt-4 flex items-center justify-center gap-1"
-      aria-label="Note 4 sur 5"
+      aria-label={`Note ${rating} sur 5`}
     >
       {Array.from({ length: 5 }).map((_, index) => (
         <span
           key={index}
           aria-hidden="true"
           className={`text-xl leading-none ${
-            index < 4 ? "text-yellow-400" : "text-slate-300"
+            index < rating ? "text-yellow-400" : "text-slate-300"
           }`}
         >
           {"\u2605"}
@@ -121,7 +124,7 @@ export default function HomePage() {
               <h3 className="text-xl font-semibold text-slate-950">
                 {card.username}
               </h3>
-              <RatingStars />
+              <RatingStars rating={card.rating} />
               <p className="mt-4 text-sm leading-6 text-slate-600">
                 {card.comment}
               </p>
