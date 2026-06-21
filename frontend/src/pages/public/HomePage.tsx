@@ -2,23 +2,44 @@
 // Permet de naviguer entre les pages sans recharger l'application.
 import { Link } from "react-router-dom";
 
-const featureCards = [
+const testimonialCards = [
   {
-    title: "Trouver",
-    description:
-      "Repere les developpeurs qui partagent les competences que tu veux pratiquer.",
+    username: "Jimmy",
+    comment:
+      "J'ai trouvé un partenaire React rapidement et les sessions m'ont aidé à progresser rapidement.",
   },
   {
-    title: "Collaborer",
-    description:
-      "Rejoins des groupes et organise des sessions de travail adaptees a ton niveau.",
+    username: "Nathan",
+    comment:
+      "Les groupes sont simples a rejoindre et les échanges restent bien organisés, la messagerie instantanée et la visio sont un plus.",
   },
   {
-    title: "Progresser",
-    description:
-      "Centralise tes competences, tes sessions et tes echanges depuis ton espace.",
+    username: "Sarah",
+    comment:
+      "J'aime pouvoir suivre mes compétences et retrouver mes sessions au même endroit.",
   },
 ];
+
+function RatingStars() {
+  return (
+    <div
+      className="mt-4 flex items-center justify-center gap-1"
+      aria-label="Note 4 sur 5"
+    >
+      {Array.from({ length: 5 }).map((_, index) => (
+        <span
+          key={index}
+          aria-hidden="true"
+          className={`text-xl leading-none ${
+            index < 4 ? "text-yellow-400" : "text-slate-300"
+          }`}
+        >
+          {"\u2605"}
+        </span>
+      ))}
+    </div>
+  );
+}
 
 // Page d'accueil publique de SkillBridge
 export default function HomePage() {
@@ -68,7 +89,9 @@ export default function HomePage() {
         {/* Carte présentant les principales fonctionnalités */}
         <div className="flex min-h-48 w-full flex-col justify-center rounded-2xl border bg-slate-200 p-8 text-center shadow-sm sm:min-h-56 sm:p-12">
           {/* Titre de la section fonctionnalités */}
-          <h2 className="text-2xl font-semibold sm:text-3xl">Fonctionnalités</h2>
+          <h2 className="text-2xl font-semibold sm:text-3xl">
+            Fonctionnalités
+          </h2>
 
           {/* Liste des fonctionnalités proposées */}
           <ul className="mt-8 grid gap-4 text-slate-600 sm:grid-cols-2 lg:grid-cols-5">
@@ -90,16 +113,17 @@ export default function HomePage() {
         </div>
 
         <div className="grid auto-rows-fr gap-4 md:grid-cols-3">
-          {featureCards.map((card) => (
+          {testimonialCards.map((card) => (
             <article
-              key={card.title}
+              key={card.username}
               className="flex min-h-44 flex-col justify-center rounded-2xl border bg-white p-6 text-center shadow-sm sm:min-h-52"
             >
               <h3 className="text-xl font-semibold text-slate-950">
-                {card.title}
+                {card.username}
               </h3>
+              <RatingStars />
               <p className="mt-4 text-sm leading-6 text-slate-600">
-                {card.description}
+                {card.comment}
               </p>
             </article>
           ))}
