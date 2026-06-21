@@ -1,0 +1,23 @@
+# SkillBridge
+
+SkillBridge est une plateforme collaborative de mise en relation entre developpeurs permettant de partager des competences, de rejoindre des groupes de travail, d'organiser des sessions collaboratives et de communiquer en temps reel.
+
+## Pages principales
+
+- [Accueil](https://skillbridge-sigma.vercel.app/)
+- [Connexion](https://skillbridge-sigma.vercel.app/login)
+- [Inscription](https://skillbridge-sigma.vercel.app/register)
+- [Mot de passe oublie](https://skillbridge-sigma.vercel.app/forgot-password)
+
+## Fonctionnalites
+
+- Recherche d'apprenants par nom, competence, niveau et ville.
+- Gestion de profil, competences et disponibilites.
+- Creation et participation a des groupes de travail.
+- Organisation de sessions collaboratives.
+- Messagerie et notifications en temps reel.
+- Visioconference integree pour les sessions et les groupes.
+
+## API
+
+- [API SkillBridge](https://skillbridge-backend-xnha.onrender.com/api/health)
