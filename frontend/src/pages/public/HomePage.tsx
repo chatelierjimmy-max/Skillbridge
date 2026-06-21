@@ -2,6 +2,24 @@
 // Permet de naviguer entre les pages sans recharger l'application.
 import { Link } from "react-router-dom";
 
+const featureCards = [
+  {
+    title: "Trouver",
+    description:
+      "Repere les developpeurs qui partagent les competences que tu veux pratiquer.",
+  },
+  {
+    title: "Collaborer",
+    description:
+      "Rejoins des groupes et organise des sessions de travail adaptees a ton niveau.",
+  },
+  {
+    title: "Progresser",
+    description:
+      "Centralise tes competences, tes sessions et tes echanges depuis ton espace.",
+  },
+];
+
 // Page d'accueil publique de SkillBridge
 export default function HomePage() {
   return (
@@ -69,6 +87,22 @@ export default function HomePage() {
             {/* Tableau de bord personnel */}
             <li>Dashboard personnel</li>
           </ul>
+        </div>
+
+        <div className="grid auto-rows-fr gap-4 md:grid-cols-3">
+          {featureCards.map((card) => (
+            <article
+              key={card.title}
+              className="flex min-h-44 flex-col justify-center rounded-2xl border bg-white p-6 text-center shadow-sm sm:min-h-52"
+            >
+              <h3 className="text-xl font-semibold text-slate-950">
+                {card.title}
+              </h3>
+              <p className="mt-4 text-sm leading-6 text-slate-600">
+                {card.description}
+              </p>
+            </article>
+          ))}
         </div>
       </div>
     </section>
