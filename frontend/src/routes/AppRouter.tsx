@@ -1,12 +1,12 @@
 import { Suspense, type ReactElement } from "react";
-import { createBrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import AppLayout from "../components/layout/AppLayout";
 import PublicLayout from "../components/layout/PublicLayout";
 import AdminRoute from "./AdminRoute";
 import {
   AdminLogsPage,
   AdminUsersPage,
+  AppLayout,
   DashboardPage,
   ForgotPasswordPage,
   GroupDetailPage,
@@ -33,102 +33,59 @@ function lazyRoute(element: ReactElement) {
   return <Suspense fallback={routeFallback}>{element}</Suspense>;
 }
 
-export const router = createBrowserRouter([
-  {
-    element: <PublicLayout />,
-    children: [
-      {
-        path: "/",
-        element: lazyRoute(<HomePage />),
-      },
-      {
-        path: "/login",
-        element: lazyRoute(<LoginPage />),
-      },
-      {
-        path: "/register",
-        element: lazyRoute(<RegisterPage />),
-      },
-      {
-        path: "/forgot-password",
-        element: lazyRoute(<ForgotPasswordPage />),
-      },
-      {
-        path: "/reset-password",
-        element: lazyRoute(<ResetPasswordPage />),
-      },
-    ],
-  },
-  {
-    element: <PrivateRoute />,
-    children: [
-      {
-        element: <AppLayout />,
-        children: [
-          {
-            path: "/dashboard",
-            element: lazyRoute(<DashboardPage />),
-          },
-          {
-            path: "/profile",
-            element: lazyRoute(<ProfilePage />),
-          },
-          {
-            path: "/search",
-            element: lazyRoute(<SearchPage />),
-          },
-          {
-            path: "/groups",
-            element: lazyRoute(<GroupsPage />),
-          },
-          {
-            path: "/groups/:id",
-            element: lazyRoute(<GroupDetailPage />),
-          },
-          {
-            path: "/groups/:id/sessions",
-            element: lazyRoute(<GroupSessionsPage />),
-          },
-          {
-            path: "/groups/:id/messages",
-            element: lazyRoute(<GroupMessagesPage />),
-          },
-          {
-            path: "/groups/:id/video",
-            element: lazyRoute(<VideoRoom />),
-          },
-          {
-            path: "/sessions",
-            element: lazyRoute(<SessionsPage />),
-          },
-          {
-            path: "/sessions/:sessionId/video",
-            element: lazyRoute(<VideoRoom />),
-          },
-          {
-            path: "/notifications",
-            element: lazyRoute(<NotificationsPage />),
-          },
-        ],
-      },
-    ],
-  },
-  {
-    element: <AdminRoute />,
-    children: [
-      {
-        element: <AppLayout />,
-        children: [
-          {
-            path: "/admin/users",
-            element: lazyRoute(<AdminUsersPage />),
-          },
-          {
-            path: "/admin/logs",
-            element: lazyRoute(<AdminLogsPage />),
-          },
-        ],
-      },
-    ],
-  },
-]);
+export default function AppRouter() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={lazyRoute(<HomePage />)} />
+          <Route path="/login" element={lazyRoute(<LoginPage />)} />
+          <Route path="/register" element={lazyRoute(<RegisterPage />)} />
+          <Route
+            path="/forgot-password"
+            element={lazyRoute(<ForgotPasswordPage />)}
+          />
+          <Route
+            path="/reset-password"
+            element={lazyRoute(<ResetPasswordPage />)}
+          />
+        </Route>
+
+        <Route element={<PrivateRoute />}>
+          <Route element={lazyRoute(<AppLayout />)}>
+            <Route path="/dashboard" element={lazyRoute(<DashboardPage />)} />
+            <Route path="/profile" element={lazyRoute(<ProfilePage />)} />
+            <Route path="/search" element={lazyRoute(<SearchPage />)} />
+            <Route path="/groups" element={lazyRoute(<GroupsPage />)} />
+            <Route path="/groups/:id" element={lazyRoute(<GroupDetailPage />)} />
+            <Route
+              path="/groups/:id/sessions"
+              element={lazyRoute(<GroupSessionsPage />)}
+            />
+            <Route
+              path="/groups/:id/messages"
+              element={lazyRoute(<GroupMessagesPage />)}
+            />
+            <Route path="/groups/:id/video" element={lazyRoute(<VideoRoom />)} />
+            <Route path="/sessions" element={lazyRoute(<SessionsPage />)} />
+            <Route
+              path="/sessions/:sessionId/video"
+              element={lazyRoute(<VideoRoom />)}
+            />
+            <Route
+              path="/notifications"
+              element={lazyRoute(<NotificationsPage />)}
+            />
+          </Route>
+        </Route>
+
+        <Route element={<AdminRoute />}>
+          <Route element={lazyRoute(<AppLayout />)}>
+            <Route path="/admin/users" element={lazyRoute(<AdminUsersPage />)} />
+            <Route path="/admin/logs" element={lazyRoute(<AdminLogsPage />)} />
+          </Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}

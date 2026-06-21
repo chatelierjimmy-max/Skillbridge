@@ -1,5 +1,7 @@
 import { lazy } from "react";
 
+export const AppLayout = lazy(() => import("../components/layout/AppLayout"));
+
 export const HomePage = lazy(() => import("../pages/public/HomePage"));
 export const LoginPage = lazy(() => import("../pages/auth/LoginPage"));
 export const RegisterPage = lazy(() => import("../pages/auth/RegisterPage"));
