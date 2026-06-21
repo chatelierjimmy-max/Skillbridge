@@ -131,6 +131,25 @@ export default function HomePage() {
             </article>
           ))}
         </div>
+
+        <section className="mx-auto w-full max-w-4xl rounded-2xl border bg-white p-4 text-center shadow-sm sm:p-6">
+          <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
+            Démonstration SkillBridge
+          </h2>
+
+          <div className="mt-6 overflow-hidden rounded-xl bg-slate-950">
+            <video
+              className="aspect-video w-full bg-slate-950 object-cover"
+              controls
+              preload="none"
+              poster="/demo-video-poster.svg"
+              aria-label="Video de demonstration SkillBridge"
+            >
+              <source src="/demo-skillbridge.mp4" type="video/mp4" />
+              Votre navigateur ne peut pas lire cette video.
+            </video>
+          </div>
+        </section>
       </div>
     </section>
   );
