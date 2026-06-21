@@ -48,12 +48,12 @@ export default function HomePage() {
         </div>
 
         {/* Carte présentant les principales fonctionnalités */}
-        <div className="w-full rounded-2xl border bg-slate-200 p-4 text-center shadow-sm sm:p-6">
+        <div className="flex min-h-48 w-full flex-col justify-center rounded-2xl border bg-slate-200 p-8 text-center shadow-sm sm:min-h-56 sm:p-12">
           {/* Titre de la section fonctionnalités */}
           <h2 className="text-2xl font-semibold sm:text-3xl">Fonctionnalités</h2>
 
           {/* Liste des fonctionnalités proposées */}
-          <ul className="mt-4 grid gap-2 text-slate-600 sm:grid-cols-2 lg:grid-cols-5">
+          <ul className="mt-8 grid gap-4 text-slate-600 sm:grid-cols-2 lg:grid-cols-5">
             {/* Recherche d'utilisateurs selon leurs compétences */}
             <li>Recherche par compétence</li>
 
