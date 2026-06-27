@@ -142,10 +142,9 @@ export default function HomePage() {
               className="aspect-video w-full bg-slate-950 object-cover"
               controls
               preload="none"
-              poster="/demo-video-poster.svg"
               aria-label="Video de demonstration SkillBridge"
             >
-              <source src="/demo-skillbridge.mp4" type="video/mp4" />
+              <source src="/demo-video.mp4" type="video/mp4" />
               Votre navigateur ne peut pas lire cette video.
             </video>
           </div>
