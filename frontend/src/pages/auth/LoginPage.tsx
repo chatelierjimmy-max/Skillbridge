@@ -26,6 +26,7 @@ import { useAuth } from "../../hooks/useAuth";
 
 // Utilitaire permettant d'afficher une erreur API lisible
 import { getApiErrorMessage } from "../../utils/apiError";
+import PasswordInput from "../../components/form/PasswordInput";
 
 // Page de connexion
 export default function LoginPage() {
@@ -137,10 +138,9 @@ export default function LoginPage() {
               </Link>
             </div>
 
-            <input
-              type="password"
+            <PasswordInput
+              autoComplete="current-password"
               {...register("password")}
-              className="w-full rounded-lg border px-4 py-3"
             />
 
             {/* Erreur de validation mot de passe */}

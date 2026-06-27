@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { resetPasswordSchema } from "../../schemas/auth.schema";
 import type { ResetPasswordFormData } from "../../schemas/auth.schema";
 import { authService } from "../../services/auth.service";
+import PasswordInput from "../../components/form/PasswordInput";
 import { getApiErrorMessage } from "../../utils/apiError";
 
 export default function ResetPasswordPage() {
@@ -94,10 +95,9 @@ export default function ResetPasswordPage() {
               Nouveau mot de passe
             </label>
 
-            <input
-              type="password"
+            <PasswordInput
+              autoComplete="new-password"
               {...register("password")}
-              className="w-full rounded-lg border px-4 py-3"
             />
 
             {errors.password && (
@@ -112,10 +112,9 @@ export default function ResetPasswordPage() {
               Confirmer le mot de passe
             </label>
 
-            <input
-              type="password"
+            <PasswordInput
+              autoComplete="new-password"
               {...register("confirmPassword")}
-              className="w-full rounded-lg border px-4 py-3"
             />
 
             {errors.confirmPassword && (

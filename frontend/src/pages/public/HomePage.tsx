@@ -144,7 +144,7 @@ export default function HomePage() {
               preload="none"
               aria-label="Video de demonstration SkillBridge"
               onLoadedMetadata={(event) => {
-                event.currentTarget.playbackRate = 1.5;
+                event.currentTarget.playbackRate = 2.5;
               }}
             >
               <source src="/demo-video-recadrage.mp4" type="video/mp4" />

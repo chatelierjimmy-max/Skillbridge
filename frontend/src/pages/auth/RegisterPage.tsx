@@ -26,6 +26,7 @@ import { useAuth } from "../../hooks/useAuth";
 
 // Utilitaire permettant d'afficher une erreur API lisible
 import { getApiErrorMessage } from "../../utils/apiError";
+import PasswordInput from "../../components/form/PasswordInput";
 
 // Page d'inscription
 export default function RegisterPage() {
@@ -158,10 +159,9 @@ export default function RegisterPage() {
               Mot de passe
             </label>
 
-            <input
-              type="password"
+            <PasswordInput
+              autoComplete="new-password"
               {...register("password")}
-              className="w-full rounded-lg border px-4 py-3"
             />
 
             {/* Erreur de validation du mot de passe */}
