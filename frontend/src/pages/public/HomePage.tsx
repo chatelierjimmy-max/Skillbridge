@@ -143,6 +143,9 @@ export default function HomePage() {
               controls
               preload="none"
               aria-label="Video de demonstration SkillBridge"
+              onLoadedMetadata={(event) => {
+                event.currentTarget.playbackRate = 1.5;
+              }}
             >
               <source src="/demo-video-recadrage.mp4" type="video/mp4" />
               Votre navigateur ne peut pas lire cette video.
