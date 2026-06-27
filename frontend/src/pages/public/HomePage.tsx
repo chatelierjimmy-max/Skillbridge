@@ -144,7 +144,7 @@ export default function HomePage() {
               preload="none"
               aria-label="Video de demonstration SkillBridge"
             >
-              <source src="/demo-video.mp4" type="video/mp4" />
+              <source src="/demo-video-recadrage.mp4" type="video/mp4" />
               Votre navigateur ne peut pas lire cette video.
             </video>
           </div>

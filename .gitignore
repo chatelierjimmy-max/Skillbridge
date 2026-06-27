@@ -7,3 +7,4 @@ coverage
 .DS_Store
 frontend/node_modules
 backend/node_modules
+frontend/public/demo-video.mp4
