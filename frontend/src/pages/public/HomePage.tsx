@@ -137,9 +137,9 @@ export default function HomePage() {
             Démonstration SkillBridge
           </h2>
 
-          <div className="mt-6 overflow-hidden rounded-xl bg-slate-950">
+          <div className="mx-auto mt-6 max-w-md overflow-hidden rounded-xl bg-slate-950">
             <video
-              className="aspect-video w-full bg-slate-950 object-cover"
+              className="block h-auto w-full bg-slate-950"
               controls
               preload="none"
               aria-label="Video de demonstration SkillBridge"
